@@ -11,11 +11,11 @@ public class Player {
     private int level;
     private int exp;
     private int streak;
+    private int hp;
 
-    public Player(String username, int balance, int level, int exp, int streak){
+    public Player(String username){
         this.username = username;
         playerStartGame();
-
     }
     public void setPlayerNum(int num){
         this.playerNum = num;
@@ -26,9 +26,10 @@ public class Player {
         this.level = 1;
         this.exp = 0;
         this.streak = 0;
+        this.hp = 100;
     }
 
     public String toString(){
-        return "Player: " + this.username + " - ";
+        return "Player: " + this.username + " , HP: " + this.hp + "\n";
     }
 }

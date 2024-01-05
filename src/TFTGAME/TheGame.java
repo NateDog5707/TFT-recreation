@@ -6,9 +6,10 @@ import java.util.ArrayList;
 
 public class TheGame {
 
-    ArrayList<Unit> listOneCosts, listTwoCosts, listThreeCosts, listFourCosts, listFiveCosts;
-    ArrayList<Player> listPlayers;
-    int playerCount = 0;
+    static ArrayList<Unit> listOneCosts, listTwoCosts, listThreeCosts, listFourCosts, listFiveCosts;
+    static ArrayList<Player> listPlayers;
+    Player mainPlayer;
+    static int playerCount = 0;
 
     public JFrame gameFrame;
     public JPanel TheGamePanel;
@@ -29,15 +30,20 @@ public class TheGame {
         gameFrame.setContentPane(TheGamePanel);
 
 
-        //initialize areas
+
+
+        //initialize gui areas
         countTextArea.setText(i+"");
 
 
+        //initialize vars
         listPlayers = new ArrayList<Player>();
         listOneCosts = new ArrayList<Unit>();
 
+        mainPlayer = new Player(MainMenu.getUsername());
 
-
+        TheGame.addPlayer(mainPlayer);
+        displayPlayerList();
 
         action1Button.addActionListener(new ActionListener() {
             @Override
@@ -70,10 +76,17 @@ public class TheGame {
     }
 
     //gui functions
+    public void displayPlayerList(){
+        String playerListText = "dnaowdhha";
+        for (Player player : listPlayers){
+            playerListText += player.toString();
+        }
+        playerListTextArea.setText(playerListText);
+    }
 
 
     //logistic functions
-    public void addPlayer(Player player){
+    static public void addPlayer(Player player){
         listPlayers.add(player);
         playerCount++;
         player.setPlayerNum(playerCount);

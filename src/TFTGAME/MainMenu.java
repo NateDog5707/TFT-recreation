@@ -11,6 +11,9 @@ public class MainMenu {
     private JLabel YeahLabel;
     private JPanel MainMenuPanel;
     private JButton EXITButton;
+    private JTextField usernameField;
+
+    private static String username;
 
 
     public MainMenu(){
@@ -21,22 +24,12 @@ public class MainMenu {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Opening the game menu");
 
-                /*
-                JFrame gameObj = new JFrame("The Game Menu");
-                gameObj.setContentPane(new TheGame().TheGamePanel);
-                gameObj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                gameObj.setVisible(true);
-                gameObj.setSize(300,200);
-                gameObj.setLocation(300,300);
-                */
+                //TheGame.addPlayer(new Player(usernameField.getName()));
 
-                /*
-                TheGame gameObj = new TheGame();
-                gameObj.gameFrame.setVisible(true);
-                gameObj
-
-                 */
+                username = usernameField.getText();
                 new TheGame().gameFrame.setVisible(true);
+
+
 
                 System.out.println("Opened the game menu");
             }
@@ -53,6 +46,7 @@ public class MainMenu {
     }
 
 
+
     public static void main(String[] args){
 
         JFrame frame = new JFrame("Main Menu");
@@ -63,5 +57,9 @@ public class MainMenu {
         frame.setVisible(true);
         frame.setSize(400, 200);
         frame.setLocation(100,100);
+    }
+
+    public static String getUsername(){
+        return username;
     }
 }
