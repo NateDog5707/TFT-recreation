@@ -15,6 +15,7 @@ public class MainMenu {
 
     private static String username;
 
+    private TheGame theTFTGame;
 
     public MainMenu(){
         //mainMenuFrame = new JFrame("")
@@ -27,7 +28,8 @@ public class MainMenu {
                 //TheGame.addPlayer(new Player(usernameField.getName()));
 
                 username = usernameField.getText();
-                new TheGame().gameFrame.setVisible(true);
+                theTFTGame = new TheGame();
+                theTFTGame.gameFrame.setVisible(true);
 
 
 

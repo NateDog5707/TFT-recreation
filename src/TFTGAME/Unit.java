@@ -18,6 +18,16 @@ public class Unit {
         this.ATK = atk;
     }
 
+    public Unit(String name){
+        this.name = name;
+        this.cost = 1;
+        this.HP = 0;
+        this.maxHP = 0;
+        this.MANA = 0;
+        this.maxMANA = 0;
+        this.ATK = 0;
+    }
+
 
     public void setName(String name){
         this.name = name;
@@ -54,5 +64,18 @@ public class Unit {
     }
     public int getMaxMana(){
         return this.maxMANA;
+    }
+
+    public int getATK(){
+        return this.ATK;
+    }
+
+    public void setATK(int ATK){
+        this.ATK = ATK;
+    }
+
+
+    public String toString(){
+        return this.name + " " + this.cost + " ";
     }
 }

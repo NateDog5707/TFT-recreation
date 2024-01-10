@@ -32,4 +32,10 @@ public class Player {
     public String toString(){
         return "Player: " + this.username + " , HP: " + this.hp + "\n";
     }
+
+    
+    public int getLevel(){
+        return level;
+    }
+
 }

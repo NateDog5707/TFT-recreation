@@ -76,12 +76,16 @@
       <component id="e626" class="javax.swing.JTextArea" binding="playerListTextArea">
         <constraints>
           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="50" height="200"/>
+            <preferred-size width="60" height="180"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
+          <enabled value="true"/>
+          <lineWrap value="false"/>
           <rows value="8"/>
           <text value="test"/>
+          <wrapStyleWord value="false"/>
         </properties>
       </component>
     </children>
