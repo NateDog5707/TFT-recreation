@@ -3,6 +3,7 @@ package TFTGAME;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 import java.lang.Math;
 
@@ -27,12 +28,13 @@ public class Shop {
 
     public Shop(){
 
-        /*
-        //initialize first shop
-        for (int i = 0; i < 5 ;i++){
-            shopArray[i] = rerollShopUnit(1);
-        }
-        */
+        TheGame.initializeShop();
+
+            //initialize first shop
+            for (int i = 0; i < 5 ;i++){
+                shopArray[i] = rerollShopUnit(1, i);
+            }
+
 
 
 
@@ -59,6 +61,8 @@ public class Shop {
         return panel;
     }
 
+
+
     /**
      * Call to reroll a new shop as intended. This will find 5 new units from the pool and display them and have an opportuntiy for the player to buy
      * adds new batch of units to shopArray
@@ -66,7 +70,7 @@ public class Shop {
     public void rerollShop(){
         try{
             for (int i2 = 0; i2 < 5; i2++){
-                shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()));
+                shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()), i2);
             }
         }
         catch (Exception e){
@@ -115,69 +119,69 @@ public class Shop {
      * @param cost the cost of the unit to find.
      * @return the unit to display in new shop
      */
-    public Unit rerollShopUnit(int cost){
+    public Unit rerollShopUnit(int cost,int index){
         Random rand = new Random();
         Unit theUnit;
         int randResult;
         int listLength = 1;
 
-        for (int i3 = 0; i3 < 5; i3++){
-            if (shopArray[i3] != null){
-                theUnit = shopArray[i3];
-                shopArray[i3] = null;
-                //find the unit's cost and add them back into their respective pool
-                switch (theUnit.getCost()){
-                    case 1: TheGame.getListOneCosts().add(theUnit); break;
-                    case 2: TheGame.getListTwoCosts().add(theUnit); break;
-                    case 3: TheGame.getListThreeCosts().add(theUnit); break;
-                    case 4: TheGame.getListFourCosts().add(theUnit); break;
-                    case 5: TheGame.getListFiveCosts().add(theUnit); break;
-                    default: System.out.println("ERROR in adding unit back to pool"); break;
-                }
-                // reset it for insurance
-                theUnit = null;
-            }
-            else /*there is an empty space b/c the unit was bought*/{
-                //debug
-                System.out.println("No unit to add back to pool");
-            }
 
-            //i want to grab a new unit from the pool
-            switch(cost){
-                case 1:
-                    listLength = TheGame.getListOneCosts().size();
-                    randResult = Math.abs(rand.nextInt()) % listLength;
-                    theUnit = TheGame.getListOneCosts().remove(randResult);
-                    break;
-                case 2:
-                    listLength = TheGame.getListTwoCosts().size();
-                    randResult = Math.abs(rand.nextInt()) % listLength;
-                    theUnit = TheGame.getListTwoCosts().remove(randResult);
-                    break;
-                case 3:
-                    listLength = TheGame.getListThreeCosts().size();
-                    randResult = Math.abs(rand.nextInt()) % listLength;
-                    theUnit = TheGame.getListThreeCosts().remove(randResult);
-                    break;
-                case 4:
-                    listLength = TheGame.getListFourCosts().size();
-                    randResult = Math.abs(rand.nextInt()) % listLength;
-                    theUnit = TheGame.getListFourCosts().remove(randResult);
-                    break;
-                case 5:
-                    listLength = TheGame.getListFiveCosts().size();
-                    randResult = Math.abs(rand.nextInt()) % listLength;
-                    theUnit = TheGame.getListFiveCosts().remove(randResult);
-                    break;
-                default:
-                    System.out.println("Error in grabbing a unit from pool");
-                    theUnit = new Unit("Error");
-                    break;
+        if (shopArray[index] != null){
+            theUnit = shopArray[index];
+            shopArray[index] = null;
+            //find the unit's cost and add them back into their respective pool
+            switch (theUnit.getCost()){
+                case 1: TheGame.getListOneCosts().add(theUnit); break;
+                case 2: TheGame.getListTwoCosts().add(theUnit); break;
+                case 3: TheGame.getListThreeCosts().add(theUnit); break;
+                case 4: TheGame.getListFourCosts().add(theUnit); break;
+                case 5: TheGame.getListFiveCosts().add(theUnit); break;
+                default: System.out.println("ERROR in adding unit back to pool"); break;
             }
-            return theUnit;
-
+            // reset it for insurance
+            theUnit = null;
         }
-        return null;
+        else /*there is an empty space b/c the unit was bought*/{
+            //debug
+            System.out.println("No unit to add back to pool");
+        }
+
+        //i want to grab a new unit from the pool
+        System.out.println("I want to add a unit to shop");
+        switch(cost){
+            case 1:
+                listLength = TheGame.getListOneCosts().size();
+                randResult = Math.abs(rand.nextInt()) % listLength;
+                theUnit = TheGame.getListOneCosts().remove(randResult);
+                break;
+            case 2:
+                listLength = TheGame.getListTwoCosts().size();
+                randResult = Math.abs(rand.nextInt()) % listLength;
+                theUnit = TheGame.getListTwoCosts().remove(randResult);
+                break;
+            case 3:
+                listLength = TheGame.getListThreeCosts().size();
+                randResult = Math.abs(rand.nextInt()) % listLength;
+                theUnit = TheGame.getListThreeCosts().remove(randResult);
+                break;
+            case 4:
+                listLength = TheGame.getListFourCosts().size();
+                randResult = Math.abs(rand.nextInt()) % listLength;
+                theUnit = TheGame.getListFourCosts().remove(randResult);
+                break;
+            case 5:
+                listLength = TheGame.getListFiveCosts().size();
+                randResult = Math.abs(rand.nextInt()) % listLength;
+                theUnit = TheGame.getListFiveCosts().remove(randResult);
+                break;
+            default:
+                System.out.println("Error in grabbing a unit from pool");
+                theUnit = new Unit("Error");
+                break;
+        }
+        return theUnit;
+
+
     }
 
 

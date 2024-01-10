@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 
 public class TheGame {
-    private int numOneCosts = 22;
-    private int numTwoCosts = 20;
-    private int numThreeCosts = 17;
-    private int numFourCosts = 10;
-    private int numFiveCosts = 9;
+    private static final int numOneCosts = 22;
+    private static final int numTwoCosts = 20;
+    private static final int numThreeCosts = 17;
+    private static final int numFourCosts = 10;
+    private static final int numFiveCosts = 9;
 
     private static ArrayList<Unit> listOneCosts, listTwoCosts, listThreeCosts, listFourCosts, listFiveCosts;
     static ArrayList<Player> listPlayers;
@@ -47,12 +47,14 @@ public class TheGame {
 
         //initialize vars
         listPlayers = new ArrayList<Player>();
+
+        /* //moved to initialize shop function
         listOneCosts = new ArrayList<Unit>();
         listTwoCosts = new ArrayList<Unit>();
         listThreeCosts = new ArrayList<Unit>();
         listFourCosts = new ArrayList<Unit>();
         listFiveCosts = new ArrayList<Unit>();
-
+        */
 
 
         mainPlayer = new Player(MainMenu.getUsername());
@@ -62,22 +64,7 @@ public class TheGame {
         displayPlayerList();
 
 
-        //initialize the units
-        for (int i = 0; i < numOneCosts; i++){
-            listOneCosts.add(new Unit("tempUnit 1c", 1, 100 + i, 10, 10));
-        }
-        for (int i2 = 0; i2 <numTwoCosts; i2++){
-            listTwoCosts.add(new Unit("tempUnit 2c", 2, 200 +i, 20, 20));
-        }
-        for (int i3 = 0 ;i3< numThreeCosts; i3++){
-            listThreeCosts.add(new Unit("tempUnit 3c", 3, 300 +i, 30, 30));
-        }
-        for (int i4 = 0; i4 < numFourCosts; i4++){
-            listFourCosts.add(new Unit("tempUnit 4c", 4, 400 +i, 40, 40));
-        }
-        for (int i5 =0; i5 < numFiveCosts; i5++){
-            listFiveCosts.add(new Unit("tempUnit 5c", 5, 500 +i, 50, 50));
-        }
+
 
 
         for( Unit currUnit: listOneCosts){
@@ -156,7 +143,29 @@ public class TheGame {
     }
 
 
-
+    public static void initializeShop(){
+        listOneCosts = new ArrayList<Unit>();
+        listTwoCosts = new ArrayList<Unit>();
+        listThreeCosts = new ArrayList<Unit>();
+        listFourCosts = new ArrayList<Unit>();
+        listFiveCosts = new ArrayList<Unit>();
+        //initialize the units
+        for (int i = 0; i < numOneCosts; i++){
+            listOneCosts.add(new Unit("tempUnit 1c", 1, 100 + i, 10, 10));
+        }
+        for (int i2 = 0; i2 <numTwoCosts; i2++){
+            listTwoCosts.add(new Unit("tempUnit 2c", 2, 200 +i, 20, 20));
+        }
+        for (int i3 = 0 ;i3< numThreeCosts; i3++){
+            listThreeCosts.add(new Unit("tempUnit 3c", 3, 300 +i, 30, 30));
+        }
+        for (int i4 = 0; i4 < numFourCosts; i4++){
+            listFourCosts.add(new Unit("tempUnit 4c", 4, 400 +i, 40, 40));
+        }
+        for (int i5 =0; i5 < numFiveCosts; i5++){
+            listFiveCosts.add(new Unit("tempUnit 5c", 5, 500 +i, 50, 50));
+        }
+    }
 
 
 }

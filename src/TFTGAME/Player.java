@@ -33,7 +33,7 @@ public class Player {
         return "Player: " + this.username + " , HP: " + this.hp + "\n";
     }
 
-    
+
     public int getLevel(){
         return level;
     }

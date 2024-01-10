@@ -76,6 +76,6 @@ public class Unit {
 
 
     public String toString(){
-        return this.name + " " + this.cost + " ";
+        return this.name + " " + this.getHP() + " ";
     }
 }
