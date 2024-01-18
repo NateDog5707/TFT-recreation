@@ -1,11 +1,14 @@
 package TFTGAME;
-
+import javax.swing.*;
 public class Unit {
 
     private String name;
     private int cost;
     private int HP, MANA, ATK;
     private int maxHP, maxMANA;
+
+    private String imageFile;
+    private ImageIcon image;
 
 
     public Unit(String name, int cost, int HP, int mana, int atk){
@@ -78,4 +81,19 @@ public class Unit {
     public String toString(){
         return this.name + " " + this.getHP() + " ";
     }
+
+    public String getImageFile(){
+        return this.imageFile;
+    }
+    public void setImageFile(String imageFile){
+        this.imageFile = imageFile;
+    }
+
+    public ImageIcon getImage(){
+        return image;
+    }
+
+
 }
+
+

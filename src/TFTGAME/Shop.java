@@ -1,13 +1,21 @@
 package TFTGAME;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.lang.Math;
 
 public class Shop {
+    //global var
+    public static final int shopIconWidth = 150;
+    public static final int shopIconHeight = 150;
     private JLabel shopLabel;
     private JButton buyButton1;
     private JButton buyButton2;
@@ -23,18 +31,28 @@ public class Shop {
     private JLabel costShop1Label;
     private JButton rerollButton;
 
+    private BufferedImage myPicture;
     private static Unit shopArray[] = new Unit[5];
 
 
-    public Shop(){
 
+    public Shop(){
+        //create uicomponents
         TheGame.initializeShop();
+
+        /*
+        try {
+            myPicture = ImageIO.read(new File("resources/images/champions/king_dedede.jpg"));
+        }catch (IOException e){
+            e.printStackTrace();
+            System.out.println("oopsie, file read error");
+        }
+        */
 
             //initialize first shop
             for (int i = 0; i < 5 ;i++){
                 shopArray[i] = rerollShopUnit(1, i);
             }
-
 
 
 
@@ -50,11 +68,14 @@ public class Shop {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        shopImage1 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
+
+        /*
+        shopImage1 = new JLabel(new ImageIcon());
         shopImage2 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
         shopImage3 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
         shopImage4 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
         shopImage5 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
+        */
     }
 
     public JPanel getPanel(){
@@ -68,10 +89,41 @@ public class Shop {
      * adds new batch of units to shopArray
      */
     public void rerollShop(){
+        ImageIcon imageicons[] = new ImageIcon[5];
+        Image images[] = new Image[5];
+
         try{
             for (int i2 = 0; i2 < 5; i2++){
+                //reroll the costs
                 shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()), i2);
+                //gui stuff
+                imageicons[i2] = new ImageIcon(shopArray[i2].getImageFile());
+                images[i2] = imageicons[i2].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
+                imageicons[i2] = new ImageIcon(images[i2]);
             }
+
+
+            //gui: show new batch of units
+            //shopImage1 = new JLabel(new ImageIcon(myPicture));
+            //shopImage2.setIcon(new ImageIcon("resources/images/champions/king_dedede.png"));
+
+            shopImage1.setIcon(imageicons[0]);
+            shopImage2.setIcon(imageicons[1]);
+            shopImage3.setIcon(imageicons[2]);
+            shopImage4.setIcon(imageicons[3]);
+            shopImage5.setIcon(imageicons[4]);
+
+
+
+            /*
+            shopImage1.setIcon(new ImageIcon(shopArray[0].getImageFile()));
+            shopImage2.setIcon(new ImageIcon(shopArray[1].getImageFile()));
+            shopImage3.setIcon(new ImageIcon(shopArray[2].getImageFile()));
+            shopImage4.setIcon(new ImageIcon(shopArray[3].getImageFile()));
+            shopImage5.setIcon(new ImageIcon(shopArray[4].getImageFile()));
+            */
+
+
         }
         catch (Exception e){
             System.out.println("Rerolling shop error");
@@ -89,7 +141,7 @@ public class Shop {
     public int rerollShopCosts(int level){
         Random rand = new Random();
         int randResult = Math.abs(rand.nextInt()) % 100;
-        System.out.println("1 - 100:" +randResult);
+        System.out.println("Reroll 1 - 100: " +randResult);
         switch(level){
             case 1:
             case 2:
