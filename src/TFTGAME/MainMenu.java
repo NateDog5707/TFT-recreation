@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * the main menu poggers
+ */
 public class MainMenu {
 
     //private JFrame frame;

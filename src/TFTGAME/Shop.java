@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +33,9 @@ public class Shop {
     private JButton rerollButton;
 
     private BufferedImage myPicture;
+    /**
+     * the shop's array. holds 5 units.
+     */
     private static Unit shopArray[] = new Unit[5];
 
 
@@ -62,6 +66,18 @@ public class Shop {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Rerollin'!");
                 rerollShop();
+            }
+        });
+        shopImage1.addComponentListener(new ComponentAdapter() {
+        });
+        shopImage1.addComponentListener(new ComponentAdapter() {
+        });
+        buyButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (shopArray[0] == null){
+                    System.out.println("hey nothing in this shop");
+                }
             }
         });
     }

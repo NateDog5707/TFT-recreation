@@ -46,6 +46,7 @@
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <lineWrap value="true"/>
           <text value="0"/>
         </properties>

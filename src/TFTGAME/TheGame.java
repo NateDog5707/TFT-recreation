@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 
 public class TheGame {
+
+    private static final int windowSizeWidth = 1400, windowSizeHeight = 750;
     private static final int numOneCosts = 22;
     private static final int numTwoCosts = 20;
     private static final int numThreeCosts = 17;
@@ -33,8 +35,8 @@ public class TheGame {
 
     public TheGame(){
         //createUIComponents is called
-        gameFrame = new JFrame("The Game Menu");
-        gameFrame.setSize(1600,900);
+        gameFrame = new JFrame("The GAME!!!");
+        gameFrame.setSize(windowSizeWidth,windowSizeHeight);
         gameFrame.setLocation(0,0);
         gameFrame.setContentPane(TheGamePanel);
 

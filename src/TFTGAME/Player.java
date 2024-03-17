@@ -17,9 +17,7 @@ public class Player {
         this.username = username;
         playerStartGame();
     }
-    public void setPlayerNum(int num){
-        this.playerNum = num;
-    }
+
 
     public void playerStartGame(){
         this.balance = 0;
@@ -33,9 +31,17 @@ public class Player {
         return "Player: " + this.username + " , HP: " + this.hp + "\n";
     }
 
-
+    public void setPlayerNum(int num){
+        this.playerNum = num;
+    }
+    public int getPlayerNum(){return this.playerNum;}
     public int getLevel(){
         return level;
     }
+    public void setLevel(int level){ this.level = level;}
+    public void addLevel(){ this.level += 1;}
+
+
+
 
 }
