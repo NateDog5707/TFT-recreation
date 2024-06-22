@@ -41,7 +41,16 @@ public class Player {
     public void setLevel(int level){ this.level = level;}
     public void addLevel(){ this.level += 1;}
 
+    public int getBalance() {return this.balance;}
+    public void setBalance(int bal) {this.balance = bal;}
 
-
+    public int getHp() {return this.hp;}
+    public void setHp(int hp) {this.hp = hp;}
+    public int getExp() {return this.exp;}
+    public void setExp(int exp) {this.exp = exp;}
+    public int getStreak() {return this.exp;}
+    public void breakStreak() {this.streak = 0;}
+    public void addStreak() {this.streak++;}
+    public void setStreak (int streak) {this.streak = streak;}
 
 }

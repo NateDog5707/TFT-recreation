@@ -1,15 +1,13 @@
 package TFTGAME;
 
-import javax.imageio.ImageIO;
+import TFTGAME.Exceptions.NotEnoughBalException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 import java.lang.Math;
 
@@ -38,28 +36,17 @@ public class Shop {
      */
     private static Unit shopArray[] = new Unit[5];
 
-
+    private TheGame theTFTGame;
 
     public Shop(){
         //create uicomponents
         TheGame.initializeShop();
 
-        /*
-        try {
-            myPicture = ImageIO.read(new File("resources/images/champions/king_dedede.jpg"));
-        }catch (IOException e){
-            e.printStackTrace();
-            System.out.println("oopsie, file read error");
-        }
-        */
 
             //initialize first shop
             for (int i = 0; i < 5 ;i++){
                 shopArray[i] = rerollShopUnit(1, i);
             }
-
-
-
 
         rerollButton.addActionListener(new ActionListener() {
             @Override
@@ -82,16 +69,44 @@ public class Shop {
         });
     }
 
+    public Shop (TheGame gamescreen){
+        theTFTGame = gamescreen;
+        //create uicomponents
+        TheGame.initializeShop();
+
+
+        //initialize first shop
+        for (int i = 0; i < 5 ;i++){
+            shopArray[i] = rerollShopUnit(1, i);
+        }
+
+        rerollButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Rerollin'!");
+                rerollShop();
+            }
+        });
+        shopImage1.addComponentListener(new ComponentAdapter() {
+        });
+        shopImage1.addComponentListener(new ComponentAdapter() {
+        });
+        buyButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (shopArray[0] == null){
+                    System.out.println("hey nothing in this shop");
+                }
+            }
+        });
+    }
+
+
+
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        /*
-        shopImage1 = new JLabel(new ImageIcon());
-        shopImage2 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
-        shopImage3 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
-        shopImage4 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
-        shopImage5 = new JLabel(new ImageIcon("resources/images/champions/kirby.jpg"));
-        */
     }
 
     public JPanel getPanel(){
@@ -109,9 +124,19 @@ public class Shop {
         Image images[] = new Image[5];
 
         try{
+            if (TheGame.getbal()<= 1){
+                throw new NotEnoughBalException();
+            }
+            else{
+                //enough balance, remove 2 gold and proceed to reroll
+                TheGame.setbal(TheGame.getbal() -2 );
+                theTFTGame.updateTextArea();
+            }
+
+
             for (int i2 = 0; i2 < 5; i2++){
                 //reroll the costs
-                shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()), i2);
+                shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()), i2); // may have to change this to support MULTIPLE PLAYERS
                 //gui stuff
                 imageicons[i2] = new ImageIcon(shopArray[i2].getImageFile());
                 images[i2] = imageicons[i2].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
@@ -131,15 +156,9 @@ public class Shop {
 
 
 
-            /*
-            shopImage1.setIcon(new ImageIcon(shopArray[0].getImageFile()));
-            shopImage2.setIcon(new ImageIcon(shopArray[1].getImageFile()));
-            shopImage3.setIcon(new ImageIcon(shopArray[2].getImageFile()));
-            shopImage4.setIcon(new ImageIcon(shopArray[3].getImageFile()));
-            shopImage5.setIcon(new ImageIcon(shopArray[4].getImageFile()));
-            */
-
-
+        }
+        catch (NotEnoughBalException e){
+            System.out.println("Not enough bal to reroll!");
         }
         catch (Exception e){
             System.out.println("Rerolling shop error");

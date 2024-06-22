@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class TheGame {
 
-    private static final int windowSizeWidth = 1400, windowSizeHeight = 750;
+    private static final int windowSizeWidth = 1200, windowSizeHeight = 700;
     private static final int numOneCosts = 22;
     private static final int numTwoCosts = 20;
     private static final int numThreeCosts = 17;
@@ -30,7 +30,7 @@ public class TheGame {
     private JPanel shopPanel;
     private JTextArea playerListTextArea;
 
-    static int i = 0;
+    static int bal = 0;
 
 
     public TheGame(){
@@ -42,23 +42,11 @@ public class TheGame {
 
         TestMsg.setText("Welcome to the game, " + MainMenu.getUsername() + "!");
 
-
-
         //initialize gui areas
-        countTextArea.setText(i+"");
-
+        countTextArea.setText(bal+"");
 
         //initialize vars
         listPlayers = new ArrayList<Player>();
-
-        /* //moved to initialize shop function
-        listOneCosts = new ArrayList<Unit>();
-        listTwoCosts = new ArrayList<Unit>();
-        listThreeCosts = new ArrayList<Unit>();
-        listFourCosts = new ArrayList<Unit>();
-        listFiveCosts = new ArrayList<Unit>();
-        */
-
 
         mainPlayer = new Player(MainMenu.getUsername());
 
@@ -67,9 +55,7 @@ public class TheGame {
         displayPlayerList();
 
 
-
-
-
+        //debug
         for( Unit currUnit: listOneCosts){
             System.out.println(currUnit);
         }
@@ -81,10 +67,11 @@ public class TheGame {
         action1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                i++;
-                System.out.println(i);
+                bal++;
+                System.out.println(bal);
                 System.out.println(this.getClass());
-                countTextArea.setText(i + "");
+                updateTextArea();
+                // countTextArea.setText(bal + "");
                 //Window owner = getOwner();
             }
         });
@@ -100,11 +87,12 @@ public class TheGame {
 
 
 
-    }
+    } //end constructor
+
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        shopPanel = new Shop().getPanel();
+        shopPanel = new Shop(this).getPanel();
 
     }
 
@@ -112,7 +100,7 @@ public class TheGame {
     public void displayPlayerList(){
         String playerListText = "";
         for (Player player : listPlayers){
-            playerListText += player.toString();
+            playerListText += player.toString() + "\n";
         }
         playerListTextArea.setText(playerListText);
     }
@@ -167,16 +155,31 @@ public class TheGame {
             }
         }
         for (int i2 = 0; i2 <numTwoCosts; i2++){
-            listTwoCosts.add(new Unit("tempUnit 2c", 2, 200 +i, 20, 20));
+            listTwoCosts.add(new Unit("tempUnit 2c", 2, 200 +i2, 20, 20));
         }
         for (int i3 = 0 ;i3< numThreeCosts; i3++){
-            listThreeCosts.add(new Unit("tempUnit 3c", 3, 300 +i, 30, 30));
+            listThreeCosts.add(new Unit("tempUnit 3c", 3, 300 +i3, 30, 30));
         }
         for (int i4 = 0; i4 < numFourCosts; i4++){
-            listFourCosts.add(new Unit("tempUnit 4c", 4, 400 +i, 40, 40));
+            listFourCosts.add(new Unit("tempUnit 4c", 4, 400 +i4, 40, 40));
         }
         for (int i5 =0; i5 < numFiveCosts; i5++){
-            listFiveCosts.add(new Unit("tempUnit 5c", 5, 500 +i, 50, 50));
+            listFiveCosts.add(new Unit("tempUnit 5c", 5, 500 +i5, 50, 50));
         }
     }
+
+
+    public static int getbal(){
+        return bal;
+    }
+
+    public static void setbal(int newbal){
+        bal = newbal;
+    }
+
+
+    public void updateTextArea(){
+        countTextArea.setText(bal + "");
+    }
+
 }

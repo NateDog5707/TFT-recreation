@@ -18,7 +18,7 @@ public class MainMenu {
 
     private static String username;
 
-    private TheGame theTFTGame;
+    private static TheGame theTFTGame;
 
     public MainMenu(){
         //mainMenuFrame = new JFrame("")
@@ -67,4 +67,6 @@ public class MainMenu {
     public static String getUsername(){
         return username;
     }
+
+
 }
