@@ -13,6 +13,9 @@ public class Player {
     private int streak;
     private int hp;
 
+    private Unit[] unitsOnBench = new Unit[9];
+    private Unit[] unitsActive = new Unit[10];
+
     public Player(String username){
         this.username = username;
         playerStartGame();
@@ -26,6 +29,12 @@ public class Player {
         this.streak = 0;
         this.hp = 100;
     }
+
+
+    public void addUnitBench(Unit added){
+
+    }
+
 
     public String toString(){
         return "Player: " + this.username + " , HP: " + this.hp + "\n";

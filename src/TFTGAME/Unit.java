@@ -2,6 +2,7 @@ package TFTGAME;
 import javax.swing.*;
 public class Unit {
 
+    private int id;
     private String name;
     private int cost;
     private int HP, MANA, ATK;
@@ -11,8 +12,9 @@ public class Unit {
     private ImageIcon image;
 
 
-    public Unit(String name, int cost, int HP, int mana, int atk){
+    public Unit(String name, int id, int cost, int HP, int mana, int atk){
         this.name = name;
+        this.id = id;
         this.cost = cost;
         this.HP = HP;
         this.maxHP = HP;
@@ -38,6 +40,8 @@ public class Unit {
     public String getName(){
         return this.name;
     }
+    public void setID(int id) {this.id = id;}
+    public int getID() {return this.id;}
     public void setCost(int cost){
         this.cost = cost;
     }
@@ -79,7 +83,7 @@ public class Unit {
 
 
     public String toString(){
-        return this.name + " " + this.getHP() + " ";
+        return this.name + " id:" + this.getID() + " ";
     }
 
     public String getImageFile(){

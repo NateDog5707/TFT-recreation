@@ -10,6 +10,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.lang.Math;
+import java.util.ArrayList;
 
 public class Shop {
     //global var
@@ -34,39 +35,13 @@ public class Shop {
     /**
      * the shop's array. holds 5 units.
      */
-    private static Unit shopArray[] = new Unit[5];
+    private static Unit[] shopArray = new Unit[5];
 
     private TheGame theTFTGame;
 
     public Shop(){
-        //create uicomponents
-        TheGame.initializeShop();
+        this((TheGame) null);
 
-
-            //initialize first shop
-            for (int i = 0; i < 5 ;i++){
-                shopArray[i] = rerollShopUnit(1, i);
-            }
-
-        rerollButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Rerollin'!");
-                rerollShop();
-            }
-        });
-        shopImage1.addComponentListener(new ComponentAdapter() {
-        });
-        shopImage1.addComponentListener(new ComponentAdapter() {
-        });
-        buyButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (shopArray[0] == null){
-                    System.out.println("hey nothing in this shop");
-                }
-            }
-        });
     }
 
     public Shop (TheGame gamescreen){
@@ -74,17 +49,32 @@ public class Shop {
         //create uicomponents
         TheGame.initializeShop();
 
-
+        ImageIcon[] imageicons = new ImageIcon[5];
+        Image[] images = new Image[5];
         //initialize first shop
         for (int i = 0; i < 5 ;i++){
             shopArray[i] = rerollShopUnit(1, i);
+
+
+            imageicons[i] = new ImageIcon(shopArray[i].getImageFile());
+            images[i] = imageicons[i].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
+            imageicons[i] = new ImageIcon(images[i]);
+            //System.out.println("E");
         }
+        shopImage1.setIcon(imageicons[0]);
+        shopImage2.setIcon(imageicons[1]);
+        shopImage3.setIcon(imageicons[2]);
+        shopImage4.setIcon(imageicons[3]);
+        shopImage5.setIcon(imageicons[4]);
+        //end of initalization
+
 
         rerollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Rerollin'!");
                 rerollShop();
+                System.out.println("size of 1c pool: " + TheGame.getListOneCosts().size());
             }
         });
         shopImage1.addComponentListener(new ComponentAdapter() {
@@ -97,6 +87,22 @@ public class Shop {
                 if (shopArray[0] == null){
                     System.out.println("hey nothing in this shop");
                 }
+                else{
+                    System.out.println(shopArray[0]);
+                    System.out.println("buying");
+
+                    //get rid of unit in shopArray[0], add it to player's bench
+                    // need access to player's bench.
+                    //also, get rid of unit in unit pool.
+
+
+                }
+            }
+        });
+        buyButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
@@ -120,10 +126,11 @@ public class Shop {
      * adds new batch of units to shopArray
      */
     public void rerollShop(){
-        ImageIcon imageicons[] = new ImageIcon[5];
-        Image images[] = new Image[5];
+        ImageIcon[] imageicons = new ImageIcon[5];
+        Image[] images = new Image[5];
 
         try{
+            //A check if player can reroll
             if (TheGame.getbal()<= 1){
                 throw new NotEnoughBalException();
             }
@@ -132,11 +139,17 @@ public class Shop {
                 TheGame.setbal(TheGame.getbal() -2 );
                 theTFTGame.updateTextArea();
             }
+            //A done checking!
 
-
+            //B start the reroll process   =========---------
             for (int i2 = 0; i2 < 5; i2++){
+                //before reroll debug
+                for (int i3 = 0; i3 < TheGame.getListOneCosts().size(); i3++){
+                    System.out.println("iteration " + i3 + ": " + TheGame.getListOneCosts().get(i3));
+                }
                 //reroll the costs
                 shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()), i2); // may have to change this to support MULTIPLE PLAYERS
+
                 //gui stuff
                 imageicons[i2] = new ImageIcon(shopArray[i2].getImageFile());
                 images[i2] = imageicons[i2].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
@@ -206,35 +219,42 @@ public class Shop {
      * @param cost the cost of the unit to find.
      * @return the unit to display in new shop
      */
-    public Unit rerollShopUnit(int cost,int index){
+    public Unit rerollShopUnit(int cost,int shopArrayIndex){
         Random rand = new Random();
         Unit theUnit;
         int randResult;
         int listLength = 1;
 
-
-        if (shopArray[index] != null){
-            theUnit = shopArray[index];
-            shopArray[index] = null;
+        //want to put unit back into pool if it was in the shop
+        if (shopArray[shopArrayIndex] != null){
+            theUnit = shopArray[shopArrayIndex];
+            shopArray[shopArrayIndex] = null;
             //find the unit's cost and add them back into their respective pool
-            switch (theUnit.getCost()){
-                case 1: TheGame.getListOneCosts().add(theUnit); break;
-                case 2: TheGame.getListTwoCosts().add(theUnit); break;
-                case 3: TheGame.getListThreeCosts().add(theUnit); break;
-                case 4: TheGame.getListFourCosts().add(theUnit); break;
-                case 5: TheGame.getListFiveCosts().add(theUnit); break;
-                default: System.out.println("ERROR in adding unit back to pool"); break;
-            }
+            //REPLACE this section with binary search adding, for O(lgn) time
+            addUnitBackToPool(theUnit, theUnit.getCost());
+            /*{
+                switch (theUnit.getCost()){
+                    case 1: TheGame.getListOneCosts().add(theUnit); break;
+                    case 2: TheGame.getListTwoCosts().add(theUnit); break;
+                    case 3: TheGame.getListThreeCosts().add(theUnit); break;
+                    case 4: TheGame.getListFourCosts().add(theUnit); break;
+                    case 5: TheGame.getListFiveCosts().add(theUnit); break;
+                    default: System.out.println("ERROR in adding unit back to pool"); break;
+                }
+            }*/
+
             // reset it for insurance
             theUnit = null;
+
+
         }
         else /*there is an empty space b/c the unit was bought*/{
             //debug
-            System.out.println("No unit to add back to pool");
+            //System.out.println("No unit to add back to pool");
         }
 
         //i want to grab a new unit from the pool
-        System.out.println("I want to add a unit to shop");
+        //System.out.println("I want to add a unit to shop");
         switch(cost){
             case 1:
                 listLength = TheGame.getListOneCosts().size();
@@ -272,4 +292,60 @@ public class Shop {
     }
 
 
+    public void addUnitBackToPool(Unit unitToAddBack, int cost){
+        int l, h;
+        l = 0;
+        switch(cost){
+            case 1:
+                h = TheGame.getListOneCosts().size()-1;
+                //binary search in 1costpool
+                TheGame.getListOneCosts().add( bSearchUnitPool(TheGame.getListOneCosts(), unitToAddBack.getID(), l, h), unitToAddBack);break;
+            case 2:
+                h = TheGame.getListTwoCosts().size()-1;
+                TheGame.getListTwoCosts().add( bSearchUnitPool(TheGame.getListTwoCosts(), unitToAddBack.getID(), l, h), unitToAddBack);break;
+            case 3:
+                h = TheGame.getListThreeCosts().size()-1;
+                TheGame.getListThreeCosts().add(bSearchUnitPool(TheGame.getListThreeCosts(), unitToAddBack.getID(), l, h),unitToAddBack);break;
+            case 4:
+                h = TheGame.getListFourCosts().size()-1;
+                TheGame.getListFourCosts().add(bSearchUnitPool(TheGame.getListFourCosts(), unitToAddBack.getID(), l, h),unitToAddBack);break;
+            case 5:
+                h = TheGame.getListFiveCosts().size()-1;
+                TheGame.getListFiveCosts().add(bSearchUnitPool(TheGame.getListFiveCosts(), unitToAddBack.getID(), l, h),unitToAddBack);break;
+
+            default:
+                System.out.println("error adding unit back to pool");
+        }
+
+    }
+
+
+    public int bSearchUnitPool(ArrayList<Unit> unitPool, int unitID, int l, int h){
+        //implement binary search
+        int max = h;
+        while (l <= h) {
+
+            int q = (l + h) / 2;
+
+            if (q == h) {
+                if (unitID < unitPool.get(0).getID()){
+                    return 0;
+                }
+                return q+1;
+            } else if (unitID >= unitPool.get(q).getID() && unitID < unitPool.get(q + 1).getID()) {
+                if (max == q){
+                    return q;
+                }
+                else{
+                    return q+1;
+                }
+            } else if (unitID < unitPool.get(q).getID()) {
+                h = q -1;
+            } else {
+                l = q+1;
+            }
+        }
+
+        return -1;
+    }
 }
