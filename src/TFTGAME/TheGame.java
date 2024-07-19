@@ -1,8 +1,10 @@
 package TFTGAME;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.awt.Color;
 
 
 
@@ -94,7 +96,9 @@ public class TheGame {
     private void createUIComponents() {
         // TODO: place custom component creation code here
         shopPanel = new Shop(this).getPanel();
-
+        //create a border!
+        LineBorder border = new LineBorder (new Color(229, 166, 39), 8);
+        shopPanel.setBorder(border);
     }
 
     //gui functions
