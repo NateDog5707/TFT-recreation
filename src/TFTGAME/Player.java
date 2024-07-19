@@ -1,5 +1,7 @@
 package TFTGAME;
 
+import TFTGAME.Exceptions.UnitNotFoundException;
+
 public class Player {
 
     //logistics
@@ -32,7 +34,46 @@ public class Player {
 
 
     public void addUnitBench(Unit added){
+        //find first open spot in bench, then acquire index and add unit
+        //linear search works
+        for (int i = 0; i < 9; i++){
+            if (unitsOnBench[i] == null) {
+                unitsOnBench[i] = added;
+                return;
+            }
+        }
+    }
 
+    public Unit removeUnitBench(Unit removed){
+        try {
+            for (int i = 0; i < 9; i++){
+                if (unitsOnBench[i] == removed){
+                    unitsOnBench[i] = null;
+                    return removed;
+                }
+            }
+            throw new UnitNotFoundException();
+        }catch (UnitNotFoundException e){
+            System.out.println("Unit does not exist on bench!");
+        }
+        return null;
+    }
+
+    public Unit removeUnitBench(int index){
+        try{
+            Unit grabbed;
+            if (unitsOnBench[index] != null){
+                grabbed = unitsOnBench[index];
+                unitsOnBench[index] = null;
+                return grabbed;
+            }else{
+                throw new UnitNotFoundException();
+            }
+
+        }catch (UnitNotFoundException e){
+            System.out.println("Unit does not exist on bench!");
+            return null;
+        }
     }
 
 
