@@ -105,6 +105,7 @@ public class Shop {
                     //also, get rid of unit in unit pool.
 
 
+                    //clearShopDisplay(0);
 
                 }
             }
@@ -129,6 +130,13 @@ public class Shop {
         return panel;
     }
 
+    public void clearShopArray(){
+        shopArray[0] = null;
+        shopArray[1] = null;
+        shopArray[2] = null;
+        shopArray[3] = null;
+        shopArray[4] = null;
+    }
 
 
     /**
@@ -154,9 +162,9 @@ public class Shop {
             //B start the reroll process   =========---------
             for (int i2 = 0; i2 < 5; i2++) {
                 //before reroll debug
-                /*for (int i3 = 0; i3 < TheGame.getListOneCosts().size(); i3++){
+                for (int i3 = 0; i3 < TheGame.getListOneCosts().size(); i3++){
                     System.out.println("iteration " + i3 + ": " + TheGame.getListOneCosts().get(i3));
-                }*/
+                }
                 //reroll the costs
                 shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()), i2); // may have to change this to support MULTIPLE PLAYERS
 
@@ -240,23 +248,8 @@ public class Shop {
         if (shopArray[shopArrayIndex] != null){
             theUnit = shopArray[shopArrayIndex];
             shopArray[shopArrayIndex] = null;
-            //find the unit's cost and add them back into their respective pool
 
             addUnitBackToPool(theUnit, theUnit.getCost());
-            /*{
-                switch (theUnit.getCost()){
-                    case 1: TheGame.getListOneCosts().add(theUnit); break;
-                    case 2: TheGame.getListTwoCosts().add(theUnit); break;
-                    case 3: TheGame.getListThreeCosts().add(theUnit); break;
-                    case 4: TheGame.getListFourCosts().add(theUnit); break;
-                    case 5: TheGame.getListFiveCosts().add(theUnit); break;
-                    default: System.out.println("ERROR in adding unit back to pool"); break;
-                }
-            }*/
-
-            // reset it for insurance
-            theUnit = null;
-
 
         }
         else /*there is an empty space b/c the unit was bought*/{
@@ -390,30 +383,77 @@ public class Shop {
      * want to remove unit's displayed image from shop slot if bought
      * @param index which index of the array to remove, handles 0-4
      */
-    public void updateShopDisplay(int index){
-
-    }
-
-    public void updateShopLabel(int index){
-        String formatTest1 = "letsgo";
+    public void clearShopDisplay(int index){
         switch(index){
             case 0:
-                shop1Label.setText("" + shopArray[index].getName());
-                shop1LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
-                //shop1Label.setText()
+                buyButton1.setVisible(false);
+                shopImage1.setIcon(null);
+                shop1Label.setText("");
+                shop1LabelCost.setText("");
+                break;
             case 1:
-                shop2Label.setText("" + shopArray[index].getName());
-                shop2LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+                buyButton2.setVisible(false);
+                shopImage2.setIcon(null);
+                shop2Label.setText("");
+                shop2LabelCost.setText("");
+                break;
             case 2:
-                shop3Label.setText("" + shopArray[index].getName());
-                shop3LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+                buyButton3.setVisible(false);
+                shopImage3.setIcon(null);
+                shop3Label.setText("");
+                shop3LabelCost.setText("");
+                break;
             case 3:
-                shop4Label.setText("" + shopArray[index].getName());
-                shop4LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+                buyButton4.setVisible(false);
+                shopImage4.setIcon(null);
+                shop4Label.setText("");
+                shop4LabelCost.setText("");
+                break;
             case 4:
-                shop5Label.setText("" + shopArray[index].getName());
-                shop5LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+                buyButton5.setVisible(false);
+                shopImage5.setIcon(null);
+                shop5Label.setText("");
+                shop5LabelCost.setText("");
+                break;
 
+        }
+    }
+
+    /**
+     * want to update unit's shop info during reroll when a new unit takes the shopArray space.
+     * @param index
+     */
+    public void updateShopLabel(int index){
+        if (shopArray[index] != null) {
+            switch (index) {
+                case 0:
+                    buyButton1.setVisible(true);
+                    shop1Label.setText("" + shopArray[index].getName());
+                    shop1LabelCost.setText("" + shopArray[index].getCost() + "g");
+                    break;
+                //shop1Label.setText()
+                case 1:
+                    buyButton2.setVisible(true);
+                    shop2Label.setText("" + shopArray[index].getName());
+                    shop2LabelCost.setText("" + shopArray[index].getCost() + "g");
+                    break;
+                case 2:
+                    buyButton3.setVisible(true);
+                    shop3Label.setText("" + shopArray[index].getName());
+                    shop3LabelCost.setText("" + shopArray[index].getCost() + "g");
+                    break;
+                case 3:
+                    buyButton4.setVisible(true);
+                    shop4Label.setText("" + shopArray[index].getName());
+                    shop4LabelCost.setText("" + shopArray[index].getCost() + "g");
+                    break;
+                case 4:
+                    buyButton5.setVisible(true);
+                    shop5Label.setText("" + shopArray[index].getName());
+                    shop5LabelCost.setText("" + shopArray[index].getCost() + "g");
+                    break;
+
+            }
         }
 
     }

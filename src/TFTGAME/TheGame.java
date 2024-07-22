@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.Color;
 
-
+import static java.lang.System.exit;
 
 
 public class TheGame {
@@ -33,6 +33,8 @@ public class TheGame {
     private JTextArea playerListTextArea;
 
     static int bal = 0;
+
+    private Shop theShop;
 
 
     public TheGame(){
@@ -81,10 +83,15 @@ public class TheGame {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //reset the game
 
                 //TheGamePanel.setVisible(false);
                 System.out.println("Attempting to dispose this game frame");
+                resetGame();
+                theShop = null;
+                shopPanel = null;
                 gameFrame.dispose();
+                //how to remove this game object?
             }
         });
 
@@ -95,10 +102,13 @@ public class TheGame {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        shopPanel = new Shop(this).getPanel();
+        theShop = new Shop( this);
+        //shopPanel = new Shop(this).getPanel();
+        shopPanel = theShop.getPanel();
         //create a border!
         LineBorder border = new LineBorder (new Color(229, 166, 39), 8);
         shopPanel.setBorder(border);
+
     }
 
     //gui functions
@@ -189,6 +199,17 @@ public class TheGame {
 
     public void updateTextArea(){
         countTextArea.setText(bal + "");
+    }
+
+    public void resetGame(){
+        listPlayers.clear();
+        listOneCosts.clear();
+        listTwoCosts.clear();
+        listThreeCosts.clear();
+        listFourCosts.clear();
+        listFiveCosts.clear();
+        theShop.clearShopArray();
+        //getShopArray();
     }
 
 }
