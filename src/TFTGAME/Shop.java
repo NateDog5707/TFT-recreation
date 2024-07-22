@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.lang.Math;
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 
 public class Shop {
     //global var
-    public static final int shopIconWidth = 150;
-    public static final int shopIconHeight = 150;
+    public static final int shopIconWidth = 100;
+    public static final int shopIconHeight = 100;
     private JLabel shopLabel;
     private JButton buyButton1;
     private JButton buyButton2;
@@ -28,8 +27,17 @@ public class Shop {
     private JLabel shopImage4;
     private JLabel shopImage5;
     private JPanel panel;
-    private JLabel costShop1Label;
+    private JLabel shop1Label;
     private JButton rerollButton;
+    private JLabel shop2Label;
+    private JLabel shop3Label;
+    private JLabel shop4Label;
+    private JLabel shop5Label;
+    private JLabel shop1LabelCost;
+    private JLabel shop2LabelCost;
+    private JLabel shop3LabelCost;
+    private JLabel shop4LabelCost;
+    private JLabel shop5LabelCost;
 
     private BufferedImage myPicture;
     /**
@@ -59,6 +67,8 @@ public class Shop {
             imageicons[i] = new ImageIcon(shopArray[i].getImageFile());
             images[i] = imageicons[i].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
             imageicons[i] = new ImageIcon(images[i]);
+            //along with updating image, update text
+            updateShopLabel(i);
             //System.out.println("E");
         }
         shopImage1.setIcon(imageicons[0]);
@@ -77,10 +87,8 @@ public class Shop {
                 System.out.println("size of 1c pool: " + TheGame.getListOneCosts().size());
             }
         });
-        shopImage1.addComponentListener(new ComponentAdapter() {
-        });
-        shopImage1.addComponentListener(new ComponentAdapter() {
-        });
+        /*shopImage1.addComponentListener(new ComponentAdapter() {
+        });*/
         buyButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,10 +98,12 @@ public class Shop {
                 else{
                     System.out.println(shopArray[0]);
                     System.out.println("buying");
+                    buyUnit(TheGame.mainPlayer, 0);
 
                     //get rid of unit in shopArray[0], add it to player's bench
                     // need access to player's bench.
                     //also, get rid of unit in unit pool.
+
 
 
                 }
@@ -142,11 +152,11 @@ public class Shop {
             //A done checking!
 
             //B start the reroll process   =========---------
-            for (int i2 = 0; i2 < 5; i2++){
+            for (int i2 = 0; i2 < 5; i2++) {
                 //before reroll debug
-                for (int i3 = 0; i3 < TheGame.getListOneCosts().size(); i3++){
+                /*for (int i3 = 0; i3 < TheGame.getListOneCosts().size(); i3++){
                     System.out.println("iteration " + i3 + ": " + TheGame.getListOneCosts().get(i3));
-                }
+                }*/
                 //reroll the costs
                 shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()), i2); // may have to change this to support MULTIPLE PLAYERS
 
@@ -154,6 +164,8 @@ public class Shop {
                 imageicons[i2] = new ImageIcon(shopArray[i2].getImageFile());
                 images[i2] = imageicons[i2].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
                 imageicons[i2] = new ImageIcon(images[i2]);
+
+                updateShopLabel(i2);
             }
 
 
@@ -189,7 +201,6 @@ public class Shop {
     public int rerollShopCosts(int level){
         Random rand = new Random();
         int randResult = Math.abs(rand.nextInt()) % 100;
-        System.out.println("Reroll 1 - 100: " +randResult);
         switch(level){
             case 1:
             case 2:
@@ -230,7 +241,7 @@ public class Shop {
             theUnit = shopArray[shopArrayIndex];
             shopArray[shopArrayIndex] = null;
             //find the unit's cost and add them back into their respective pool
-            //REPLACE this section with binary search adding, for O(lgn) time
+
             addUnitBackToPool(theUnit, theUnit.getCost());
             /*{
                 switch (theUnit.getCost()){
@@ -298,7 +309,6 @@ public class Shop {
         switch(cost){
             case 1:
                 h = TheGame.getListOneCosts().size()-1;
-                //binary search in 1costpool
                 TheGame.getListOneCosts().add( bSearchUnitPool(TheGame.getListOneCosts(), unitToAddBack.getID(), l, h), unitToAddBack);break;
             case 2:
                 h = TheGame.getListTwoCosts().size()-1;
@@ -327,7 +337,7 @@ public class Shop {
 
             int q = (l + h) / 2;
 
-            if (q == h) {
+            if (q >= h) {
                 if (unitID < unitPool.get(0).getID()){
                     return 0;
                 }
@@ -346,6 +356,68 @@ public class Shop {
             }
         }
 
+        //this should never happen
         return -1;
     }
+
+
+    public Unit buyUnit (Player player, int index){
+        Unit boughtUnit = shopArray[index];
+        //check unit's price and see if player has enough money
+        System.out.println("buying a unit!");
+        try {
+
+            if (boughtUnit.getCost() < player.getBalance()){
+                //cant buy, return flag
+                throw new NotEnoughBalException();
+            }
+            else{
+                player.setBalance(player.getBalance() - boughtUnit.getCost()); //new bal = old bal - cost!
+                //add unit to player's bench
+                player.addUnitBench(boughtUnit);
+                shopArray[index] = null;
+                return boughtUnit;
+            }
+
+        }catch (NotEnoughBalException e){
+            System.out.println("Not enough balance to buy unit!");
+            return null;
+        }
+
+    }
+
+    /**
+     * want to remove unit's displayed image from shop slot if bought
+     * @param index which index of the array to remove, handles 0-4
+     */
+    public void updateShopDisplay(int index){
+
+    }
+
+    public void updateShopLabel(int index){
+        String formatTest1 = "letsgo";
+        switch(index){
+            case 0:
+                shop1Label.setText("" + shopArray[index].getName());
+                shop1LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+                //shop1Label.setText()
+            case 1:
+                shop2Label.setText("" + shopArray[index].getName());
+                shop2LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+            case 2:
+                shop3Label.setText("" + shopArray[index].getName());
+                shop3LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+            case 3:
+                shop4Label.setText("" + shopArray[index].getName());
+                shop4LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+            case 4:
+                shop5Label.setText("" + shopArray[index].getName());
+                shop5LabelCost.setText("" + shopArray[index].getCost() + "g"); break;
+
+        }
+
+    }
+
 }
+
+

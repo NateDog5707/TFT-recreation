@@ -157,9 +157,11 @@ public class TheGame {
             listOneCosts.add(new Unit("tempUnit 1c", i, 1, 100 + i, 10, 10));
             if (i %2 ==0 ) {
                 listOneCosts.get(i).setImageFile("resources/images/champions/kirby.jpg");
+                listOneCosts.get(i).setName("Kirby");
             }
             else{
                 listOneCosts.get(i).setImageFile("resources/images/champions/king_dedede.png");
+                listOneCosts.get(i).setName("King Dedede");
             }
         }
         for (int i2 = 0; i2 <numTwoCosts; i2++){
