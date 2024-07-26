@@ -131,11 +131,10 @@ public class Shop {
     }
 
     public void clearShopArray(){
-        shopArray[0] = null;
-        shopArray[1] = null;
-        shopArray[2] = null;
-        shopArray[3] = null;
-        shopArray[4] = null;
+        for (int i = 0; i < 5; i++){
+            addUnitBackToPool(shopArray[i], shopArray[i].getCost());
+            shopArray[i] = null;
+        }
     }
 
 

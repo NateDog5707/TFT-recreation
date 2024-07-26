@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.Color;
 
-import static java.lang.System.exit;
-
 
 public class TheGame {
 
@@ -31,18 +29,23 @@ public class TheGame {
     private JTextArea countTextArea;
     private JPanel shopPanel;
     private JTextArea playerListTextArea;
+    private JPanel playerBenchPanel;
+    private JPanel fieldPH;
 
     static int bal = 0;
 
     private Shop theShop;
 
-
+    /*public TheGame(){
+        this((Player) null);
+    }*/
     public TheGame(){
         //createUIComponents is called
         gameFrame = new JFrame("The GAME!!!");
         gameFrame.setSize(windowSizeWidth,windowSizeHeight);
         gameFrame.setLocation(0,0);
         gameFrame.setContentPane(TheGamePanel);
+        //gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         TestMsg.setText("Welcome to the game, " + MainMenu.getUsername() + "!");
 
@@ -52,20 +55,19 @@ public class TheGame {
         //initialize vars
         listPlayers = new ArrayList<Player>();
 
-        mainPlayer = new Player(MainMenu.getUsername());
+        //mainPlayer = new Player(MainMenu.getUsername());
+        mainPlayer = MainMenu.getPlayer();
 
         //initialize the players
         TheGame.addPlayer(mainPlayer);
         displayPlayerList();
         bal = 1000;
 
-        //new game initialization
 
-        //debug
-        /*
-        for( Unit currUnit: listOneCosts){
-            System.out.println(currUnit);
-        }*/
+        //new game initialization
+        /*System.out.println("help");
+        mainPlayer.createNewBench();
+        playerBenchPanel = mainPlayer.getBench().getPanelPlayerBench();*/
 
 
 
@@ -106,8 +108,16 @@ public class TheGame {
         //shopPanel = new Shop(this).getPanel();
         shopPanel = theShop.getPanel();
         //create a border!
-        LineBorder border = new LineBorder (new Color(229, 166, 39), 8);
-        shopPanel.setBorder(border);
+        LineBorder shopBorder = new LineBorder (new Color(229, 166, 39), 8);
+        shopPanel.setBorder(shopBorder);
+
+        //want to make player bench. BUT no reference to player right here. maybe put it in the constructor instead?
+        playerBenchPanel = new PlayerBench(MainMenu.getPlayer()).getPanelPlayerBench();
+
+        LineBorder benchBorder = new LineBorder( new Color(53, 235, 174), 8);
+        playerBenchPanel.setBorder(benchBorder);
+
+
 
     }
 
@@ -203,12 +213,12 @@ public class TheGame {
 
     public void resetGame(){
         listPlayers.clear();
+        theShop.clearShopArray();
         listOneCosts.clear();
         listTwoCosts.clear();
         listThreeCosts.clear();
         listFourCosts.clear();
         listFiveCosts.clear();
-        theShop.clearShopArray();
         //getShopArray();
     }
 

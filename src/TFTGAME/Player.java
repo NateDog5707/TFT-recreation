@@ -17,12 +17,19 @@ public class Player {
 
     private Unit[] unitsOnBench = new Unit[9];
     private Unit[] unitsActive = new Unit[10];
+    private PlayerBench benchObj;
 
+
+
+
+    public Player(){
+        this.username = "John Doe";
+        playerStartGame();
+    }
     public Player(String username){
         this.username = username;
         playerStartGame();
     }
-
 
     public void playerStartGame(){
         this.balance = 0;
@@ -30,9 +37,13 @@ public class Player {
         this.exp = 0;
         this.streak = 0;
         this.hp = 100;
+        benchObj = new PlayerBench(this);
+
     }
 
-
+    public void createNewBench(){
+        benchObj = new PlayerBench(this);
+    }
     public void addUnitBench(Unit added){
         //find first open spot in bench, then acquire index and add unit
         //linear search works
@@ -77,6 +88,11 @@ public class Player {
     }
 
 
+
+    public PlayerBench getBench(){
+        return benchObj;
+    }
+
     public String toString(){
         return "Player: " + this.username + " , HP: " + this.hp + "\n";
     }
@@ -102,5 +118,9 @@ public class Player {
     public void breakStreak() {this.streak = 0;}
     public void addStreak() {this.streak++;}
     public void setStreak (int streak) {this.streak = streak;}
+
+    public Unit[] getUnitsOnBench(){return unitsOnBench;}
+    public Unit[] getUnitsActive(){return unitsActive;}
+
 
 }
