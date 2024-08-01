@@ -1,10 +1,11 @@
 package TFTGAME;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.awt.Color;
 
 
 public class TheGame {
@@ -21,7 +22,7 @@ public class TheGame {
     static Player mainPlayer;
     static int playerCount = 0;
 
-    public JFrame gameFrame;
+    public JFrame gameFrame /*= new JFrame("The GAME!!!")*/;
     public JPanel TheGamePanel;
     private JLabel TestMsg;
     private JButton action1Button;
@@ -31,6 +32,9 @@ public class TheGame {
     private JTextArea playerListTextArea;
     private JPanel playerBenchPanel;
     private JPanel fieldPH;
+    LineBorder shopBorder;
+    LineBorder benchBorder;
+    JInternalFrame intFrame;
 
     static int bal = 0;
 
@@ -45,7 +49,28 @@ public class TheGame {
         gameFrame.setSize(windowSizeWidth,windowSizeHeight);
         gameFrame.setLocation(0,0);
         gameFrame.setContentPane(TheGamePanel);
+        gameFrame.setUndecorated(true);
         //gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //internal frame
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.ipady = 100;
+        intFrame = new JInternalFrame("help");
+        ((BasicInternalFrameUI)intFrame.getUI()).setNorthPane(null);
+        intFrame.setTitle("Internal frame");
+        intFrame.setVisible(true);
+        intFrame.setClosable(true);
+        intFrame.setResizable(true);
+        intFrame.setBorder(benchBorder);
+        intFrame.setContentPane(new PlayerBench(MainMenu.getPlayer()).getPanelPlayerBench());
+
+
+        fieldPH.add(intFrame, c);
+        //end internalFrame for bench
+
 
         TestMsg.setText("Welcome to the game, " + MainMenu.getUsername() + "!");
 
@@ -63,11 +88,6 @@ public class TheGame {
         displayPlayerList();
         bal = 1000;
 
-
-        //new game initialization
-        /*System.out.println("help");
-        mainPlayer.createNewBench();
-        playerBenchPanel = mainPlayer.getBench().getPanelPlayerBench();*/
 
 
 
@@ -108,15 +128,14 @@ public class TheGame {
         //shopPanel = new Shop(this).getPanel();
         shopPanel = theShop.getPanel();
         //create a border!
-        LineBorder shopBorder = new LineBorder (new Color(229, 166, 39), 8);
+        shopBorder = new LineBorder (new Color(229, 166, 39), 8);
+        benchBorder = new LineBorder( new Color(53, 235, 174), 8);
         shopPanel.setBorder(shopBorder);
 
         //want to make player bench. BUT no reference to player right here. maybe put it in the constructor instead?
         playerBenchPanel = new PlayerBench(MainMenu.getPlayer()).getPanelPlayerBench();
 
-        LineBorder benchBorder = new LineBorder( new Color(53, 235, 174), 8);
         playerBenchPanel.setBorder(benchBorder);
-
 
 
     }
