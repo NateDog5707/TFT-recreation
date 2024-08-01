@@ -52,26 +52,6 @@ public class TheGame {
         gameFrame.setUndecorated(true);
         //gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        //internal frame
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.ipady = 100;
-        intFrame = new JInternalFrame("help");
-        ((BasicInternalFrameUI)intFrame.getUI()).setNorthPane(null);
-        intFrame.setTitle("Internal frame");
-        intFrame.setVisible(true);
-        intFrame.setClosable(true);
-        intFrame.setResizable(true);
-        intFrame.setBorder(benchBorder);
-        intFrame.setContentPane(new PlayerBench(MainMenu.getPlayer()).getPanelPlayerBench());
-
-
-        fieldPH.add(intFrame, c);
-        //end internalFrame for bench
-
-
         TestMsg.setText("Welcome to the game, " + MainMenu.getUsername() + "!");
 
         //initialize gui areas
@@ -87,6 +67,24 @@ public class TheGame {
         TheGame.addPlayer(mainPlayer);
         displayPlayerList();
         bal = 1000;
+
+        //internal frame
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.ipady = 200;
+        intFrame = new JInternalFrame("help");
+        ((BasicInternalFrameUI)intFrame.getUI()).setNorthPane(null);
+        intFrame.setTitle("Internal frame");
+        intFrame.setVisible(true);
+        intFrame.setClosable(true);
+        intFrame.setResizable(true);
+        intFrame.setBorder(benchBorder);
+        intFrame.setContentPane(mainPlayer.getBench().getPanelPlayerBench());
+
+        fieldPH.add(intFrame, c);
+        //end internalFrame for bench
 
 
 
@@ -133,10 +131,9 @@ public class TheGame {
         shopPanel.setBorder(shopBorder);
 
         //want to make player bench. BUT no reference to player right here. maybe put it in the constructor instead?
-        playerBenchPanel = new PlayerBench(MainMenu.getPlayer()).getPanelPlayerBench();
+        /*playerBenchPanel = new PlayerBench(MainMenu.getPlayer()).getPanelPlayerBench();
 
-        playerBenchPanel.setBorder(benchBorder);
-
+        playerBenchPanel.setBorder(benchBorder);*/
 
     }
 

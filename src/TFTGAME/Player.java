@@ -37,7 +37,7 @@ public class Player {
         this.exp = 0;
         this.streak = 0;
         this.hp = 100;
-        benchObj = new PlayerBench(this);
+        createNewBench();
 
     }
 
