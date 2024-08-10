@@ -10,21 +10,19 @@ import java.awt.event.ActionListener;
 public class MainMenu {
 
     //private JFrame frame;
-    private JButton Button1;
-    private JLabel YeahLabel;
+    private JButton startButton;
     private JPanel MainMenuPanel;
     private JButton EXITButton;
     private JTextField usernameField;
-
+    private JLabel EYUtext;
     private static String username;
-
     private static TheGame theTFTGame;
     private static Player player;
 
     public MainMenu(){
         //mainMenuFrame = new JFrame("")
 
-        Button1.addActionListener(new ActionListener() {
+        startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Opening the game menu");
@@ -32,15 +30,17 @@ public class MainMenu {
                 //TheGame.addPlayer(new Player(usernameField.getName()));
 
                 username = usernameField.getText();
+                if (username.isEmpty()){
+                    username = "John Doe";
+                }
                 player = new Player(username);
 
-                //theTFTGame = new TheGame(player);
                 theTFTGame = new TheGame();
                 theTFTGame.gameFrame.setVisible(true);
 
+                //here to call Player Bench init cuz sizes of modules don't get established until after constructor
+                theTFTGame.getMainPlayer().getBench().initSlotIcons();
 
-
-                System.out.println("Opened the game menu");
             }
         });
         EXITButton.addActionListener(new ActionListener() {
@@ -65,6 +65,7 @@ public class MainMenu {
         frame.pack();
         frame.setVisible(true);
         frame.setSize(400, 200);
+        frame.setSize(frame.getPreferredSize());
         frame.setLocation(100,100);
     }
 

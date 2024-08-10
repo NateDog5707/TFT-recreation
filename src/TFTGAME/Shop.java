@@ -1,6 +1,7 @@
 package TFTGAME;
 
 import TFTGAME.Exceptions.NotEnoughBalException;
+import TFTGAME.Exceptions.NotEnoughSpaceException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,6 +39,7 @@ public class Shop {
     private JLabel shop3LabelCost;
     private JLabel shop4LabelCost;
     private JLabel shop5LabelCost;
+    private JButton buyEXPButton;
 
     private BufferedImage myPicture;
     /**
@@ -46,6 +48,9 @@ public class Shop {
     private static Unit[] shopArray = new Unit[5];
 
     private TheGame theTFTGame;
+
+    ImageIcon[] imageIcons = new ImageIcon[5];
+    Image[] images = new Image[5];
 
     public Shop(){
         this((TheGame) null);
@@ -57,25 +62,21 @@ public class Shop {
         //create uicomponents
         TheGame.initializeShop();
 
-        ImageIcon[] imageicons = new ImageIcon[5];
-        Image[] images = new Image[5];
         //initialize first shop
         for (int i = 0; i < 5 ;i++){
             shopArray[i] = rerollShopUnit(1, i);
 
-
-            imageicons[i] = new ImageIcon(shopArray[i].getImageFile());
-            images[i] = imageicons[i].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
-            imageicons[i] = new ImageIcon(images[i]);
+            imageIcons[i] = new ImageIcon(shopArray[i].getImageFile());
+            images[i] = imageIcons[i].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
+            imageIcons[i] = new ImageIcon(images[i]);
             //along with updating image, update text
             updateShopLabel(i);
-            //System.out.println("E");
         }
-        shopImage1.setIcon(imageicons[0]);
-        shopImage2.setIcon(imageicons[1]);
-        shopImage3.setIcon(imageicons[2]);
-        shopImage4.setIcon(imageicons[3]);
-        shopImage5.setIcon(imageicons[4]);
+        shopImage1.setIcon(imageIcons[0]);
+        shopImage2.setIcon(imageIcons[1]);
+        shopImage3.setIcon(imageIcons[2]);
+        shopImage4.setIcon(imageIcons[3]);
+        shopImage5.setIcon(imageIcons[4]);
         //end of initalization
 
 
@@ -97,16 +98,13 @@ public class Shop {
                 }
                 else{
                     System.out.println(shopArray[0]);
-                    System.out.println("buying");
-                    buyUnit(TheGame.mainPlayer, 0);
-
-                    //get rid of unit in shopArray[0], add it to player's bench
-                    // need access to player's bench.
-                    //also, get rid of unit in unit pool.
-
-
-                    //clearShopDisplay(0);
-
+                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 0);
+                    assert(benchIndexAdded >= 0 && benchIndexAdded <=8);
+                    //gui
+                    {
+                        clearShopDisplay(0);
+                        theTFTGame.mainPlayer.getBench().updateBenchIcons(benchIndexAdded);
+                    }
                 }
             }
         });
@@ -132,8 +130,10 @@ public class Shop {
 
     public void clearShopArray(){
         for (int i = 0; i < 5; i++){
-            addUnitBackToPool(shopArray[i], shopArray[i].getCost());
-            shopArray[i] = null;
+            if (shopArray[i] != null){
+                addUnitBackToPool(shopArray[i], shopArray[i].getCost());
+                shopArray[i] = null;
+            }
         }
     }
 
@@ -143,8 +143,8 @@ public class Shop {
      * adds new batch of units to shopArray
      */
     public void rerollShop(){
-        ImageIcon[] imageicons = new ImageIcon[5];
-        Image[] images = new Image[5];
+        /*ImageIcon[] imageIcons = new ImageIcon[5];
+        Image[] images = new Image[5];*/
 
         try{
             //A check if player can reroll
@@ -161,30 +161,25 @@ public class Shop {
             //B start the reroll process   =========---------
             for (int i2 = 0; i2 < 5; i2++) {
                 //before reroll debug
-                for (int i3 = 0; i3 < TheGame.getListOneCosts().size(); i3++){
+                /*for (int i3 = 0; i3 < TheGame.getListOneCosts().size(); i3++){
                     System.out.println("iteration " + i3 + ": " + TheGame.getListOneCosts().get(i3));
-                }
+                }*/
                 //reroll the costs
-                shopArray[i2] = rerollShopUnit(rerollShopCosts(TheGame.getMainPlayer().getLevel()), i2); // may have to change this to support MULTIPLE PLAYERS
+                shopArray[i2] = rerollShopUnit(rerollShopCosts(theTFTGame.getMainPlayer().getLevel()), i2); // may have to change this to support MULTIPLE PLAYERS
 
                 //gui stuff
-                imageicons[i2] = new ImageIcon(shopArray[i2].getImageFile());
-                images[i2] = imageicons[i2].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
-                imageicons[i2] = new ImageIcon(images[i2]);
+                imageIcons[i2] = new ImageIcon(shopArray[i2].getImageFile());
+                images[i2] = imageIcons[i2].getImage().getScaledInstance(shopIconWidth, shopIconHeight, Image.SCALE_DEFAULT);
+                imageIcons[i2] = new ImageIcon(images[i2]);
 
                 updateShopLabel(i2);
             }
 
-
-            //gui: show new batch of units
-            //shopImage1 = new JLabel(new ImageIcon(myPicture));
-            //shopImage2.setIcon(new ImageIcon("resources/images/champions/king_dedede.png"));
-
-            shopImage1.setIcon(imageicons[0]);
-            shopImage2.setIcon(imageicons[1]);
-            shopImage3.setIcon(imageicons[2]);
-            shopImage4.setIcon(imageicons[3]);
-            shopImage5.setIcon(imageicons[4]);
+            shopImage1.setIcon(imageIcons[0]);
+            shopImage2.setIcon(imageIcons[1]);
+            shopImage3.setIcon(imageIcons[2]);
+            shopImage4.setIcon(imageIcons[3]);
+            shopImage5.setIcon(imageIcons[4]);
 
 
 
@@ -257,7 +252,7 @@ public class Shop {
         }
 
         //i want to grab a new unit from the pool
-        //System.out.println("I want to add a unit to shop");
+
         switch(cost){
             case 1:
                 listLength = TheGame.getListOneCosts().size();
@@ -329,20 +324,25 @@ public class Shop {
 
             int q = (l + h) / 2;
 
+            //if the last number
             if (q >= h) {
                 if (unitID < unitPool.get(0).getID()){
                     return 0;
                 }
                 return q+1;
-            } else if (unitID >= unitPool.get(q).getID() && unitID < unitPool.get(q + 1).getID()) {
+            }
+            // if unitID is in between the midpoint number "q" and "q+1"
+            else if (unitID >= unitPool.get(q).getID() && unitID < unitPool.get(q + 1).getID()) {
                 if (max == q){
                     return q;
                 }
                 else{
                     return q+1;
                 }
-            } else if (unitID < unitPool.get(q).getID()) {
-                h = q -1;
+            }
+            //didnt find a match yet, cut the search in half.
+            else if (unitID < unitPool.get(q).getID()) {
+                h = q ;
             } else {
                 l = q+1;
             }
@@ -353,7 +353,7 @@ public class Shop {
     }
 
 
-    public Unit buyUnit (Player player, int index){
+    public int buyUnit (Player player, int index){
         Unit boughtUnit = shopArray[index];
         //check unit's price and see if player has enough money
         System.out.println("buying a unit!");
@@ -363,17 +363,23 @@ public class Shop {
                 //cant buy, return flag
                 throw new NotEnoughBalException();
             }
+            else if (player.isBenchFull()){
+                //can't buy, return flag
+                throw new NotEnoughSpaceException();
+            }
             else{
                 player.setBalance(player.getBalance() - boughtUnit.getCost()); //new bal = old bal - cost!
                 //add unit to player's bench
-                player.addUnitBench(boughtUnit);
                 shopArray[index] = null;
-                return boughtUnit;
+                return player.addUnitBench(boughtUnit);
             }
 
         }catch (NotEnoughBalException e){
             System.out.println("Not enough balance to buy unit!");
-            return null;
+            return -1;
+        }catch (NotEnoughSpaceException e){
+            System.out.println("Not enough space on bench to buy unit!");
+            return -1;
         }
 
     }

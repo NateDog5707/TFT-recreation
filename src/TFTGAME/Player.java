@@ -44,15 +44,16 @@ public class Player {
     public void createNewBench(){
         benchObj = new PlayerBench(this);
     }
-    public void addUnitBench(Unit added){
+    public int addUnitBench(Unit added){
         //find first open spot in bench, then acquire index and add unit
         //linear search works
         for (int i = 0; i < 9; i++){
             if (unitsOnBench[i] == null) {
                 unitsOnBench[i] = added;
-                return;
+                return i;
             }
         }
+        return -1;
     }
 
     public Unit removeUnitBench(Unit removed){
@@ -85,6 +86,14 @@ public class Player {
             System.out.println("Unit does not exist on bench!");
             return null;
         }
+    }
+    public boolean isBenchFull(){
+        for (int i = 0; i < 9; i++){
+            if (unitsOnBench[i] == null){
+                return false;
+            }
+        }
+        return true;
     }
 
 
