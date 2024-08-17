@@ -20,7 +20,6 @@ public class MainMenu {
     private static Player player;
 
     public MainMenu(){
-        //mainMenuFrame = new JFrame("")
 
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -39,8 +38,10 @@ public class MainMenu {
                 theTFTGame.gameFrame.setVisible(true);
 
                 //here to call Player Bench init cuz sizes of modules don't get established until after constructor
-                theTFTGame.getMainPlayer().getBench().initSlotIcons();
+                //theTFTGame.getMainPlayer().getBench().initSlotIcons();
+                //theTFTGame.getMainPlayer().getBench().initSlotIconsTemp();
 
+                player.getBench().initSlotsTemp(theTFTGame.getBenchFrame());
             }
         });
         EXITButton.addActionListener(new ActionListener() {
