@@ -3,8 +3,13 @@ package TFTGAME;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class PlayerBench {
+    private final int benchIconWidth = 90;
+    private final int benchIconHeight = 90;
 
     private final int benchSize = 9;
     private Player player;
@@ -12,7 +17,12 @@ public class PlayerBench {
     private JPanel panelPlayerBench;
     private JLabel test;
     private GridBagConstraints c = new GridBagConstraints();
-    //private LineBorder unitBorder = new Border( )
+    private final int borderWidth = 4;
+    private LineBorder unitBorder = new LineBorder(new Color(0,0,0),borderWidth);
+    private LineBorder hoveredBorder = new LineBorder(new Color(50,100,255), borderWidth);
+    private JLabel tempPlaceholder;
+    private JLabel[] tempSlotholder = new JLabel[9];
+
 
     public PlayerBench(){
         this((Player) null);
@@ -50,7 +60,6 @@ public class PlayerBench {
         c.anchor = GridBagConstraints.LAST_LINE_START;
         c.anchor = GridBagConstraints.WEST;
 
-        JLabel tempPlaceholder;
         //testing stuff
         /*c.gridx = 0;
         c.gridy = 1;
@@ -82,19 +91,59 @@ public class PlayerBench {
 
     public void initSlotsTemp (JInternalFrame intFrame){
         //want to get the JFrame to add to directly
-        JLabel tempPlaceholder;
-        intFrame.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 15));
+        intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 15));
+        intFrame.setAlignmentY(1);
 
         for (int i = 0; i < 9; i++) {
             //c.gridx = i;
             tempPlaceholder = new JLabel();
+            tempSlotholder[i] = tempPlaceholder;
+            tempPlaceholder.setSize(i, i);
             //tempPlaceholder.setIcon(new ImageIcon("resources/images/champions/kirby.jpg"));
             ImageIcon unitImageIcon = new ImageIcon("resources/images/champions/king_dedede.png");
-            Image unitImage = unitImageIcon.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
+            Image unitImage = unitImageIcon.getImage().getScaledInstance(benchIconWidth, benchIconHeight, Image.SCALE_DEFAULT);
             unitImageIcon = new ImageIcon(unitImage);
             tempPlaceholder.setIcon(unitImageIcon);
+            tempPlaceholder.setBorder(unitBorder);
+            tempPlaceholder.addMouseListener(new MouseListener(){
+                int hovered = 0;
+                @Override
+                public void mouseClicked(MouseEvent e) {}
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (SwingUtilities.isLeftMouseButton(e)){
+                        System.out.println("Left mouse");
+                    }
+                    else if (SwingUtilities.isRightMouseButton(e)){
+                        System.out.println("Right mouse");
+                    }
+                }
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if (hovered == 0){
+                        hovered = 1;
+                        ((JLabel)e.getComponent()).setBorder(hoveredBorder);
+                    }
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (hovered == 1){
+                        hovered = 0;
+                        ((JLabel)e.getComponent()).setBorder(unitBorder);
+                    }
+                }
+            });
 
             intFrame.add(tempPlaceholder);
+        }
+    }
+
+    //debug
+    public void printTempSlots(){
+        for (int i =0; i < 9; i++){
+            System.out.println(tempSlotholder[i]);
         }
     }
 

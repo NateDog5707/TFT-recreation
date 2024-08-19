@@ -42,6 +42,8 @@ public class MainMenu {
                 //theTFTGame.getMainPlayer().getBench().initSlotIconsTemp();
 
                 player.getBench().initSlotsTemp(theTFTGame.getBenchFrame());
+
+                //player.getBench().printTempSlots();
             }
         });
         EXITButton.addActionListener(new ActionListener() {
