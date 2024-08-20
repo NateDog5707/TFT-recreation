@@ -103,7 +103,8 @@ public class Shop {
                     //gui
                     {
                         clearShopDisplay(0);
-                        theTFTGame.mainPlayer.getBench().updateBenchIcons(benchIndexAdded);
+                        //theTFTGame.mainPlayer.getBench().updateBenchIcons(benchIndexAdded);
+                        theTFTGame.mainPlayer.getBench().updateBenchIconsTemp(benchIndexAdded);
                     }
                 }
             }

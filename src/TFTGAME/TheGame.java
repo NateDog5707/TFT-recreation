@@ -18,9 +18,9 @@ public class TheGame {
     private static final int numFiveCosts = 9;
 
     private static ArrayList<Unit> listOneCosts, listTwoCosts, listThreeCosts, listFourCosts, listFiveCosts;
-    static ArrayList<Player> listPlayers;
+    private static ArrayList<Player> listPlayers;
     public Player mainPlayer;
-    static int playerCount = 0;
+    private static int playerCount = 0;
 
     public JFrame gameFrame /*= new JFrame("The GAME!!!")*/;
     public JPanel TheGamePanel;
@@ -33,9 +33,9 @@ public class TheGame {
     private JPanel fieldPH;
     private static LineBorder shopBorder;
     private static LineBorder benchBorder;
-    JInternalFrame intrFrameBench;
+    private JInternalFrame intrFrameBench;
 
-    static int bal = 0;
+    private static int bal = 0;
 
     private Shop theShop;
 

@@ -2,6 +2,7 @@ package TFTGAME;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -16,12 +17,14 @@ public class PlayerBench {
     private Unit[] bench = null;
     private JPanel panelPlayerBench;
     private JLabel test;
+    private JInternalFrame internalFrame;
     private GridBagConstraints c = new GridBagConstraints();
     private final int borderWidth = 4;
     private LineBorder unitBorder = new LineBorder(new Color(0,0,0),borderWidth);
     private LineBorder hoveredBorder = new LineBorder(new Color(50,100,255), borderWidth);
     private JLabel tempPlaceholder;
     private JLabel[] tempSlotholder = new JLabel[9];
+    private int debugIndex = 0;
 
 
     public PlayerBench(){
@@ -90,9 +93,10 @@ public class PlayerBench {
     }
 
     public void initSlotsTemp (JInternalFrame intFrame){
+        internalFrame = intFrame;
         //want to get the JFrame to add to directly
+        //intFrame.setContentPane(new JPanel());
         intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 15));
-        intFrame.setAlignmentY(1);
 
         for (int i = 0; i < 9; i++) {
             //c.gridx = i;
@@ -105,39 +109,12 @@ public class PlayerBench {
             unitImageIcon = new ImageIcon(unitImage);
             tempPlaceholder.setIcon(unitImageIcon);
             tempPlaceholder.setBorder(unitBorder);
-            tempPlaceholder.addMouseListener(new MouseListener(){
-                int hovered = 0;
-                @Override
-                public void mouseClicked(MouseEvent e) {}
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (SwingUtilities.isLeftMouseButton(e)){
-                        System.out.println("Left mouse");
-                    }
-                    else if (SwingUtilities.isRightMouseButton(e)){
-                        System.out.println("Right mouse");
-                    }
-                }
-                @Override
-                public void mouseReleased(MouseEvent e) {}
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    if (hovered == 0){
-                        hovered = 1;
-                        ((JLabel)e.getComponent()).setBorder(hoveredBorder);
-                    }
-                }
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    if (hovered == 1){
-                        hovered = 0;
-                        ((JLabel)e.getComponent()).setBorder(unitBorder);
-                    }
-                }
-            });
+
+            unitAddListenerOnBench(tempPlaceholder);
 
             intFrame.add(tempPlaceholder);
         }
+
     }
 
     //debug
@@ -204,6 +181,68 @@ public class PlayerBench {
         panelPlayerBench.updateUI();
         //debug
         System.out.println("bench index adding image to: " + index);
+    }
+
+    //could use
+    public void updateBenchIconsTemp(int index){
+        JLabel addingLabel = new JLabel();
+        if (bench[index] != null){
+            ImageIcon unitImageIcon = new ImageIcon(player.getUnitsOnBench()[index].getImageFile());
+            Image unitImage = unitImageIcon.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
+            unitImageIcon = new ImageIcon(unitImage);
+            addingLabel.setIcon(unitImageIcon);
+            addingLabel.setBorder(unitBorder);
+        }
+        else{
+            addingLabel.setIcon(null);
+        }
+
+
+        internalFrame.remove(tempSlotholder[index]);
+        tempSlotholder[index] =addingLabel;
+        unitAddListenerOnBench(addingLabel);
+        internalFrame.add(addingLabel, index);
+        internalFrame.updateUI();
+        ((BasicInternalFrameUI)internalFrame.getUI()).setNorthPane(null);
+        //debug
+        //System.out.println("bench index adding image to: " + index);
+    }
+
+    public JLabel unitAddListenerOnBench(JLabel theLabel){
+        theLabel.addMouseListener(new MouseListener(){
+            int hovered = 0;
+            int index = debugIndex;
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)){
+                    System.out.println("Left mouse " + index);
+                }
+                else if (SwingUtilities.isRightMouseButton(e)){
+                    System.out.println("Right mouse " + index);
+                }
+                System.out.println(e);
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (hovered == 0){
+                    hovered = 1;
+                    ((JLabel)e.getComponent()).setBorder(hoveredBorder);
+                }
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (hovered == 1){
+                    hovered = 0;
+                    ((JLabel)e.getComponent()).setBorder(unitBorder);
+                }
+            }
+        });
+        debugIndex += 1;
+        return theLabel;
     }
 
 }
