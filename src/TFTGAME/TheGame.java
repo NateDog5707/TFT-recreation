@@ -18,9 +18,9 @@ public class TheGame {
     private static final int numFiveCosts = 9;
 
     private static ArrayList<Unit> listOneCosts, listTwoCosts, listThreeCosts, listFourCosts, listFiveCosts;
-    static ArrayList<Player> listPlayers;
+    private static ArrayList<Player> listPlayers;
     public Player mainPlayer;
-    static int playerCount = 0;
+    private static int playerCount = 0;
 
     public JFrame gameFrame /*= new JFrame("The GAME!!!")*/;
     public JPanel TheGamePanel;
@@ -31,11 +31,11 @@ public class TheGame {
     private JPanel shopPanel;
     private JTextArea playerListTextArea;
     private JPanel fieldPH;
-    LineBorder shopBorder;
-    LineBorder benchBorder;
-    JInternalFrame intrFrameBench;
+    private static LineBorder shopBorder;
+    private static LineBorder benchBorder;
+    private JInternalFrame intrFrameBench;
 
-    static int bal = 0;
+    private static int bal = 0;
 
     private Shop theShop;
 
@@ -73,8 +73,9 @@ public class TheGame {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.weighty = 1;
-        c.ipady = 200;
+        c.ipady = 150;
         c.ipadx = 1000;
+        c.anchor = GridBagConstraints.WEST;
         intrFrameBench = new JInternalFrame("help");
         ((BasicInternalFrameUI)intrFrameBench.getUI()).setNorthPane(null);
         intrFrameBench.setTitle("Internal frame");
@@ -82,12 +83,15 @@ public class TheGame {
         intrFrameBench.setClosable(false);
         intrFrameBench.setResizable(false);
         intrFrameBench.setBorder(benchBorder);
-        intrFrameBench.setContentPane(mainPlayer.getBench().getPanelPlayerBench());
+        intrFrameBench.setSize( c.ipadx, c.ipady);
+        intrFrameBench.setSize( 1000, 120);
+
+        //intrFrameBench.setContentPane(mainPlayer.getBench().getPanelPlayerBench()); //uncomment this
         intrFrameBench.pack();
         fieldPH.add(intrFrameBench, c);
         //end internalFrame for bench
         System.out.println("fieldPH size: " + fieldPH.getSize());
-        System.out.println("intrFrameBench size: " + intrFrameBench.getContentPane().getSize());
+        System.out.println("intrFrameBench size: " + intrFrameBench.getSize());
 
         action1Button.addActionListener(new ActionListener() {
             @Override
@@ -222,6 +226,7 @@ public class TheGame {
     public static void setbal(int newbal){
         bal = newbal;
     }
+    public JInternalFrame getBenchFrame(){ return intrFrameBench; }
 
     public void updateTextArea(){
         countTextArea.setText(bal + "");

@@ -1,21 +1,32 @@
 package TFTGAME;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.awt.*;
-<<<<<<< Updated upstream
-=======
+
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
->>>>>>> Stashed changes
 
 public class PlayerBench {
+    private final int benchIconWidth = 90;
+    private final int benchIconHeight = 90;
 
     private final int benchSize = 9;
     private Player player;
     private Unit[] bench = null;
     private JPanel panelPlayerBench;
     private JLabel test;
+    private JInternalFrame internalFrame;
     private GridBagConstraints c = new GridBagConstraints();
+    private final int borderWidth = 4;
+    private LineBorder unitBorder = new LineBorder(new Color(0,0,0),borderWidth);
+    private LineBorder hoveredBorder = new LineBorder(new Color(50,100,255), borderWidth);
+    private JLabel tempPlaceholder;
+    private JLabel[] tempSlotholder = new JLabel[9];
+    private int debugIndex = 0;
+
 
     public PlayerBench(){
         this((Player) null);
@@ -34,32 +45,34 @@ public class PlayerBench {
         }
     }
 
-<<<<<<< Updated upstream
-    /**
-     * called from main menu.
-     */
-    public void initSlotIcons(){
-        JLabel tempPlaceholder;
-        panelPlayerBench.removeAll();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.LINE_START;
-        panelPlayerBench.updateUI();
-        c.gridy = 0;
-        //c.ipadx = (((int) (panelPlayerBench.getSize().getWidth())) /9)-25; //this can be changed?
-        System.out.println(c.ipadx);
-        c.insets = new Insets(0,2,0,2);
-        c.anchor = GridBagConstraints.LAST_LINE_START;
-        for (int i = 0;i < benchSize; i++){
-            c.gridx = i;
+
+    public void initSlotsIcons (JInternalFrame intFrame){
+        internalFrame = intFrame;
+        //want to get the JFrame to add to directly
+        //intFrame.setContentPane(new JPanel());
+        intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 15));
+
+        for (int i = 0; i < 9; i++) {
+            //c.gridx = i;
             tempPlaceholder = new JLabel();
+            tempSlotholder[i] = tempPlaceholder;
+            tempPlaceholder.setSize(i, i);
             //tempPlaceholder.setIcon(new ImageIcon("resources/images/champions/kirby.jpg"));
-            tempPlaceholder.setHorizontalAlignment(SwingConstants.LEFT);
-            panelPlayerBench.add(tempPlaceholder, c);
+            ImageIcon unitImageIcon = new ImageIcon("resources/images/champions/king_dedede.png");
+            Image unitImage = unitImageIcon.getImage().getScaledInstance(benchIconWidth, benchIconHeight, Image.SCALE_DEFAULT);
+            unitImageIcon = new ImageIcon(unitImage);
+            tempPlaceholder.setIcon(unitImageIcon);
+            tempPlaceholder.setBorder(unitBorder);
+
+            unitAddListenerOnBench(tempPlaceholder);
+
+            intFrame.add(tempPlaceholder);
         }
 
-        panelPlayerBench.updateUI();
-=======
-    public void initSlotsIcons (JInternalFrame intFrame){
+    }
+
+
+    public void initSlotsTemp (JInternalFrame intFrame){
         internalFrame = intFrame;
         //want to get the JFrame to add to directly
         //intFrame.setContentPane(new JPanel());
@@ -89,7 +102,6 @@ public class PlayerBench {
         for (int i =0; i < 9; i++){
             System.out.println(tempSlotholder[i]);
         }
->>>>>>> Stashed changes
     }
 
     public JPanel getPanelPlayerBench(){
@@ -135,8 +147,8 @@ public class PlayerBench {
         panelPlayerBench.updateUI();
     }
 
-<<<<<<< Updated upstream
-    public void updateBenchIcons(int index){
+
+/*    public void updateBenchIcons(int index){
         c.gridx = index;
         JLabel addingLabel = new JLabel();
         ImageIcon unitImageIcon = new ImageIcon(player.getUnitsOnBench()[index].getImageFile());
@@ -148,12 +160,8 @@ public class PlayerBench {
         panelPlayerBench.updateUI();
         //debug
         System.out.println("bench index adding image to: " + index);
-    }
+    }*/
 
-=======
-
-
-    //could use
     public void updateBenchIcons(int index){
         JLabel addingLabel = new JLabel();
         if (bench[index] != null){
@@ -215,5 +223,4 @@ public class PlayerBench {
         return theLabel;
     }
 
->>>>>>> Stashed changes
 }
