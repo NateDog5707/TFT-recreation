@@ -103,6 +103,10 @@ public class Shop {
                     //gui
                     {
                         clearShopDisplay(0);
+<<<<<<< Updated upstream
+=======
+                        //theTFTGame.mainPlayer.getBench().updateBenchIcons(benchIndexAdded);
+>>>>>>> Stashed changes
                         theTFTGame.mainPlayer.getBench().updateBenchIcons(benchIndexAdded);
                     }
                 }
