@@ -116,52 +116,7 @@ public class PlayerBench {
         }
     }
 
-    //ok so starting here i need to figure out how to make draggable stuff. gonna watch youtube
-    //update/ add or delete image icons
-    public void updateBenchIcons(){
-        //go through the 9 bench slots for the player
-        //debug
-        /*for (int i =0; i < benchSize; i ++){
-            if (bench[i] != null){
-                System.out.println(i + " exists");
-            }
-            else{
-                System.out.println(i + " doesn't exist");
-            }
-        }*/
-        //preliminary test
-        if (bench[0] != null){
-            c.gridx = 0;
-            c.gridy = 0;
-            panelPlayerBench.remove(c.gridx);
-            panelPlayerBench.add(new JLabel("lll"), c, c.gridx);
-            panelPlayerBench.updateUI();
-            c.gridx = 8;
-            panelPlayerBench.remove(c.gridx);
-            panelPlayerBench.add(new JLabel("no"), c, c.gridx);
-
-            /// getComponentAt() could also help
-        }
-        //for loop to update the bench displays. but do i need to check all slots if they are changed or just one?
-
-        panelPlayerBench.updateUI();
-    }
-
-
-/*    public void updateBenchIcons(int index){
-        c.gridx = index;
-        JLabel addingLabel = new JLabel();
-        ImageIcon unitImageIcon = new ImageIcon(player.getUnitsOnBench()[index].getImageFile());
-        Image unitImage = unitImageIcon.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
-        unitImageIcon = new ImageIcon(unitImage);
-        addingLabel.setIcon(unitImageIcon);
-        panelPlayerBench.add(addingLabel, c, index);
-        panelPlayerBench.remove(index+1);
-        panelPlayerBench.updateUI();
-        //debug
-        System.out.println("bench index adding image to: " + index);
-    }*/
-
+    
     public void updateBenchIcons(int index){
         JLabel addingLabel = new JLabel();
         if (bench[index] != null){
@@ -189,7 +144,7 @@ public class PlayerBench {
     public JLabel unitAddListenerOnBench(JLabel theLabel){
         theLabel.addMouseListener(new MouseListener(){
             int hovered = 0;
-            int index = debugIndex;
+            final int index = debugIndex;
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
