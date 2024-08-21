@@ -34,6 +34,8 @@ public class TheGame {
     private static LineBorder shopBorder;
     private static LineBorder benchBorder;
     private JInternalFrame intrFrameBench;
+    private final int benchWidth = 900;
+    private final int benchHeight = 120;
 
     private static int bal = 0;
 
@@ -71,11 +73,12 @@ public class TheGame {
         //internal frame
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.ipady = 150;
-        c.ipadx = 1000;
-        c.anchor = GridBagConstraints.WEST;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.ipady = benchHeight;
+        c.ipadx = benchWidth;
+        c.gridy = 1;
+        c.anchor = GridBagConstraints.SOUTH;
         intrFrameBench = new JInternalFrame("help");
         ((BasicInternalFrameUI)intrFrameBench.getUI()).setNorthPane(null);
         intrFrameBench.setTitle("Internal frame");
@@ -84,14 +87,18 @@ public class TheGame {
         intrFrameBench.setResizable(false);
         intrFrameBench.setBorder(benchBorder);
         intrFrameBench.setSize( c.ipadx, c.ipady);
-        intrFrameBench.setSize( 1000, 120);
 
-        //intrFrameBench.setContentPane(mainPlayer.getBench().getPanelPlayerBench()); //uncomment this
         intrFrameBench.pack();
         fieldPH.add(intrFrameBench, c);
-        //end internalFrame for bench
-        System.out.println("fieldPH size: " + fieldPH.getSize());
-        System.out.println("intrFrameBench size: " + intrFrameBench.getSize());
+
+        //test two windows
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.NORTH;
+        c.ipady = 100;
+        c.ipadx = 100;
+        c.gridy = 0;
+        intrFrameBench.pack();
+        fieldPH.add(new JLabel("Field"), c);
 
         action1Button.addActionListener(new ActionListener() {
             @Override
@@ -227,6 +234,7 @@ public class TheGame {
         bal = newbal;
     }
     public JInternalFrame getBenchFrame(){ return intrFrameBench; }
+
 
     public void updateTextArea(){
         countTextArea.setText(bal + "");

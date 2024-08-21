@@ -5,9 +5,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.awt.*;
 
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 public class PlayerBench {
     private final int benchIconWidth = 90;
@@ -26,6 +24,10 @@ public class PlayerBench {
     private JLabel tempPlaceholder;
     private JLabel[] tempSlotholder = new JLabel[9];
     private int debugIndex = 0;
+
+    // for mouse dragging
+    private Point startPoint;
+    private Point location;
 
 
     public PlayerBench(){
@@ -50,7 +52,7 @@ public class PlayerBench {
         internalFrame = intFrame;
         //want to get the JFrame to add to directly
         //intFrame.setContentPane(new JPanel());
-        intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 15));
+        intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 12));
 
         for (int i = 0; i < 9; i++) {
             //c.gridx = i;
@@ -65,37 +67,13 @@ public class PlayerBench {
             tempPlaceholder.setBorder(unitBorder);
 
             unitAddListenerOnBench(tempPlaceholder);
-
+            unitAddListenerDraggable(tempPlaceholder);
             intFrame.add(tempPlaceholder);
         }
 
     }
 
 
-    public void initSlotsTemp (JInternalFrame intFrame){
-        internalFrame = intFrame;
-        //want to get the JFrame to add to directly
-        //intFrame.setContentPane(new JPanel());
-        intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 15));
-
-        for (int i = 0; i < 9; i++) {
-            //c.gridx = i;
-            tempPlaceholder = new JLabel();
-            tempSlotholder[i] = tempPlaceholder;
-            tempPlaceholder.setSize(i, i);
-            //tempPlaceholder.setIcon(new ImageIcon("resources/images/champions/kirby.jpg"));
-            ImageIcon unitImageIcon = new ImageIcon("resources/images/champions/king_dedede.png");
-            Image unitImage = unitImageIcon.getImage().getScaledInstance(benchIconWidth, benchIconHeight, Image.SCALE_DEFAULT);
-            unitImageIcon = new ImageIcon(unitImage);
-            tempPlaceholder.setIcon(unitImageIcon);
-            tempPlaceholder.setBorder(unitBorder);
-
-            unitAddListenerOnBench(tempPlaceholder);
-
-            intFrame.add(tempPlaceholder);
-        }
-
-    }
 
     //debug
     public void printTempSlots(){
@@ -116,7 +94,7 @@ public class PlayerBench {
         }
     }
 
-    
+
     public void updateBenchIcons(int index){
         JLabel addingLabel = new JLabel();
         if (bench[index] != null){
@@ -134,6 +112,7 @@ public class PlayerBench {
         internalFrame.remove(tempSlotholder[index]);
         tempSlotholder[index] =addingLabel;
         unitAddListenerOnBench(addingLabel);
+        //unitAddListenerDraggable(addingLabel);
         internalFrame.add(addingLabel, index);
         internalFrame.updateUI();
         ((BasicInternalFrameUI)internalFrame.getUI()).setNorthPane(null);
@@ -145,7 +124,6 @@ public class PlayerBench {
         theLabel.addMouseListener(new MouseListener(){
             int hovered = 0;
             final int index = debugIndex;
-            @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
             public void mousePressed(MouseEvent e) {
@@ -157,7 +135,6 @@ public class PlayerBench {
                 }
                 System.out.println(e);
             }
-            @Override
             public void mouseReleased(MouseEvent e) {}
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -176,6 +153,61 @@ public class PlayerBench {
         });
         debugIndex += 1;
         return theLabel;
+    }
+
+
+    public JLabel unitAddListenerDraggable(JLabel theLabel){
+        theLabel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                startPoint = SwingUtilities.convertPoint(theLabel, e.getPoint(), theLabel.getParent());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        theLabel.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                location = SwingUtilities.convertPoint(theLabel, e.getPoint(), theLabel.getParent());
+                if (theLabel.getParent().getBounds().contains(location)) {
+                    Point endLoc = theLabel.getLocation();
+                    endLoc.translate(location.x - startPoint.x, location.y - startPoint.y);
+                    endLoc.x = Math.max(endLoc.x, 0);
+                    endLoc.y = Math.max(endLoc.y, 0);
+                    endLoc.x = Math.min(endLoc.x, theLabel.getParent().getWidth()- theLabel.getWidth());
+                    endLoc.y = Math.min(endLoc.y, theLabel.getParent().getHeight()- theLabel.getHeight());
+                    theLabel.setLocation(endLoc);
+                    startPoint = location;
+
+                }
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+
+            }
+        });
+        return theLabel;
+
+
     }
 
 }
