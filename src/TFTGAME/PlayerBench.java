@@ -71,32 +71,6 @@ public class PlayerBench {
 
     }
 
-
-    public void initSlotsTemp (JInternalFrame intFrame){
-        internalFrame = intFrame;
-        //want to get the JFrame to add to directly
-        //intFrame.setContentPane(new JPanel());
-        intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 15));
-
-        for (int i = 0; i < 9; i++) {
-            //c.gridx = i;
-            tempPlaceholder = new JLabel();
-            tempSlotholder[i] = tempPlaceholder;
-            tempPlaceholder.setSize(i, i);
-            //tempPlaceholder.setIcon(new ImageIcon("resources/images/champions/kirby.jpg"));
-            ImageIcon unitImageIcon = new ImageIcon("resources/images/champions/king_dedede.png");
-            Image unitImage = unitImageIcon.getImage().getScaledInstance(benchIconWidth, benchIconHeight, Image.SCALE_DEFAULT);
-            unitImageIcon = new ImageIcon(unitImage);
-            tempPlaceholder.setIcon(unitImageIcon);
-            tempPlaceholder.setBorder(unitBorder);
-
-            unitAddListenerOnBench(tempPlaceholder);
-
-            intFrame.add(tempPlaceholder);
-        }
-
-    }
-
     //debug
     public void printTempSlots(){
         for (int i =0; i < 9; i++){
