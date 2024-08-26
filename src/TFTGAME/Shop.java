@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class Shop {
     //global var
-    public static final int shopIconWidth = 100;
-    public static final int shopIconHeight = 100;
+    public static final int shopIconWidth = 90;
+    public static final int shopIconHeight = 90;
     private JLabel shopLabel;
     private JButton buyButton1;
     private JButton buyButton2;
@@ -103,7 +103,7 @@ public class Shop {
                     //gui
                     {
                         clearShopDisplay(0);
-                        theTFTGame.mainPlayer.getBench().updateBenchIcons(benchIndexAdded);
+                        theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
 
                     }
                 }
@@ -121,7 +121,6 @@ public class Shop {
 
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
 
     }
 

@@ -19,9 +19,10 @@ public class PlayerBench {
     private JInternalFrame internalFrame;
     private GridBagConstraints c = new GridBagConstraints();
     private final int borderWidth = 4;
-    private LineBorder unitBorder = new LineBorder(new Color(0,0,0),borderWidth);
-    private LineBorder hoveredBorder = new LineBorder(new Color(50,100,255), borderWidth);
+    private final LineBorder unitBorder = new LineBorder(new Color(0,0,0),borderWidth);
+    private final LineBorder hoveredBorder = new LineBorder(new Color(50,100,255), borderWidth);
     private JLabel tempPlaceholder;
+    JLabel addingLabel;
     private JLabel[] tempSlotholder = new JLabel[9];
     private int debugIndex = 0;
 
@@ -47,19 +48,22 @@ public class PlayerBench {
         }
     }
 
-
-    public void initSlotsIcons (JInternalFrame intFrame){
+    //TODO: develop anchor points for field so units are in a respective slot.
+    public void initSlotsIcons (JInternalFrame intFrame, TheGame game){
         internalFrame = intFrame;
-        //want to get the JFrame to add to directly
-        //intFrame.setContentPane(new JPanel());
-        intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 12));
 
-        for (int i = 0; i < 9; i++) {
+        //intFrame.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 15));
+        intFrame.setLayout(null);
+
+        for (int i = 0; i < benchSize ; i++) {
             //c.gridx = i;
             tempPlaceholder = new JLabel();
             tempSlotholder[i] = tempPlaceholder;
-            tempPlaceholder.setSize(i, i);
-            //tempPlaceholder.setIcon(new ImageIcon("resources/images/champions/kirby.jpg"));
+            //location
+            tempPlaceholder.setSize(90, 90);
+            //TODO. solidfy location setting.
+            tempPlaceholder.setLocation(i * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
+
             ImageIcon unitImageIcon = new ImageIcon("resources/images/champions/king_dedede.png");
             Image unitImage = unitImageIcon.getImage().getScaledInstance(benchIconWidth, benchIconHeight, Image.SCALE_DEFAULT);
             unitImageIcon = new ImageIcon(unitImage);
@@ -69,6 +73,7 @@ public class PlayerBench {
             unitAddListenerOnBench(tempPlaceholder);
             unitAddListenerDraggable(tempPlaceholder);
             intFrame.add(tempPlaceholder);
+            System.out.println("playerbench creation: " + intFrame.getComponentCount());
         }
 
     }
@@ -94,8 +99,10 @@ public class PlayerBench {
     }
 
 
-    public void updateBenchIcons(int index){
-        JLabel addingLabel = new JLabel();
+    //TODO update this for new no-layout bench
+    public void updateBenchIcons(JInternalFrame intFrame, TheGame game, int index){
+//        JLabel addingLabel = new JLabel();
+        addingLabel = new JLabel();
         if (bench[index] != null){
             ImageIcon unitImageIcon = new ImageIcon(player.getUnitsOnBench()[index].getImageFile());
             Image unitImage = unitImageIcon.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
@@ -106,15 +113,30 @@ public class PlayerBench {
         else{
             addingLabel.setIcon(null);
         }
+        // i need to set location
+        addingLabel.setLocation(index * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
+        addingLabel.setSize(90,90);
 
 
-        internalFrame.remove(tempSlotholder[index]);
+        intFrame.remove(tempSlotholder[index]);
+        /*tempSlotholder[index] = null;
+        intFrame.updateUI();*/
+
+
         tempSlotholder[index] =addingLabel;
         unitAddListenerOnBench(addingLabel);
-        //unitAddListenerDraggable(addingLabel);
-        internalFrame.add(addingLabel, index);
-        internalFrame.updateUI();
-        ((BasicInternalFrameUI)internalFrame.getUI()).setNorthPane(null);
+        unitAddListenerDraggable(addingLabel);
+        intFrame.add(addingLabel);
+        //intFrame.add(new JLabel("HEY"));
+        //intFrame.add()
+        intFrame.updateUI();
+        ((BasicInternalFrameUI)intFrame.getUI()).setNorthPane(null);
+
+        intFrame.getComponent(0);
+
+
+        System.out.println("[PlayerBench] component count: " +intFrame.getComponentCount());
+
         //debug
         //System.out.println("bench index adding image to: " + index);
     }

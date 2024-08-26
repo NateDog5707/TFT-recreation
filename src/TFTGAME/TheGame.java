@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class TheGame {
 
-    private static final int windowSizeWidth = 1280, windowSizeHeight = 700;
+    private static final int windowSizeWidth = 1280, windowSizeHeight = 800;
     private static final int numOneCosts = 22;
     private static final int numTwoCosts = 20;
     private static final int numThreeCosts = 17;
@@ -31,11 +31,11 @@ public class TheGame {
     private JPanel shopPanel;
     private JTextArea playerListTextArea;
     private JPanel fieldPH;
-    private static LineBorder shopBorder;
-    private static LineBorder benchBorder;
+    private static final LineBorder shopBorder = new LineBorder (new Color(229, 166, 39), 6);
+    private static final LineBorder benchBorder = new LineBorder( new Color(53, 235, 174), 6);
     private JInternalFrame intrFrameBench;
-    private final int benchWidth = 900;
-    private final int benchHeight = 120;
+    private static final int benchWidth = 900;
+    private static final int benchHeight = 450;
 
     private static int bal = 0;
 
@@ -75,8 +75,8 @@ public class TheGame {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.weighty = 0.5;
-        c.ipady = benchHeight;
         c.ipadx = benchWidth;
+        c.ipady = benchHeight;
         c.gridy = 1;
         c.anchor = GridBagConstraints.SOUTH;
         intrFrameBench = new JInternalFrame("help");
@@ -86,16 +86,16 @@ public class TheGame {
         intrFrameBench.setClosable(false);
         intrFrameBench.setResizable(false);
         intrFrameBench.setBorder(benchBorder);
-        intrFrameBench.setSize( c.ipadx, c.ipady);
+        intrFrameBench.setSize( benchWidth, benchHeight);
 
         intrFrameBench.pack();
         fieldPH.add(intrFrameBench, c);
 
         //test two windows
-        c.fill = GridBagConstraints.NONE;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTH;
-        c.ipady = 100;
-        c.ipadx = 100;
+        c.ipady = 50;
+        c.ipadx = 50;
         c.gridy = 0;
         intrFrameBench.pack();
         fieldPH.add(new JLabel("Field"), c);
@@ -134,9 +134,6 @@ public class TheGame {
 
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
-        shopBorder = new LineBorder (new Color(229, 166, 39), 6);
-        benchBorder = new LineBorder( new Color(53, 235, 174), 6);
 
         theShop = new Shop( this);
         //shopPanel = new Shop(this).getPanel();
@@ -239,6 +236,8 @@ public class TheGame {
     public void updateTextArea(){
         countTextArea.setText(bal + "");
     }
+    public int getBenchWidth(){ return intrFrameBench.getWidth();}
+    public int getBenchHeight(){return intrFrameBench.getHeight();}
 
     public void resetGame(){
         listPlayers.clear();
