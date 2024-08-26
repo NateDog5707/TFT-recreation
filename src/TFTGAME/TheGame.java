@@ -87,6 +87,7 @@ public class TheGame {
         intrFrameBench.setResizable(false);
         intrFrameBench.setBorder(benchBorder);
         intrFrameBench.setSize( benchWidth, benchHeight);
+        intrFrameBench.setLayout(null);
 
         intrFrameBench.pack();
         fieldPH.add(intrFrameBench, c);
