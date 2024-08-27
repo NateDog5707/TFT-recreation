@@ -27,6 +27,11 @@ public class PlayerBench {
     // for mouse dragging
     private Point startPoint;
     private Point location;
+    private final int fieldRows = 4;
+    private final int fieldColumns = 7;
+    private Point[][] anchorPointsField = new Point[fieldRows][fieldColumns]; //for gui
+    private JLabel[][] unitField = new JLabel[fieldRows][fieldColumns]; // so the game knows
+    private Point[] anchorPointsBench = new Point[9];
 
 
     public PlayerBench(){
@@ -49,14 +54,15 @@ public class PlayerBench {
     //TODO: develop anchor points for field so units are in a respective slot.
     public void initSlotsIcons (JInternalFrame intFrame, TheGame game){
         internalFrame = intFrame;
-
+        //intFrame.setLayout(null); // called in TheGame on frame setup
         for (int i = 0; i < benchSize ; i++) {
             addingLabel = new JLabel();
             tempSlotholder[i] = addingLabel;
             addingLabel.setSize(90, 90);
             //TODO. solidfy location setting.
-            addingLabel.setLocation(i * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
-
+            System.out.println("Help");
+            addingLabel.setLocation(i * (game.getBenchWidth()/9 -1) +5, game.getBenchHeight() - (benchIconHeight + 20));
+            //addingLabel.setLocation(i * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
             ImageIcon unitImageIcon = new ImageIcon("resources/images/champions/king_dedede.png");
             Image unitImage = unitImageIcon.getImage().getScaledInstance(benchIconWidth, benchIconHeight, Image.SCALE_DEFAULT);
             unitImageIcon = new ImageIcon(unitImage);
@@ -106,7 +112,9 @@ public class PlayerBench {
             intFrame.remove(tempSlotholder[index]);
         }
         // i need to set location
-        addingLabel.setLocation(index * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
+        System.out.println("Help");
+        addingLabel.setLocation(index * (game.getBenchWidth()/9 -1) +5, game.getBenchHeight() - (benchIconHeight + 20));
+        //addingLabel.setLocation(index * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
         addingLabel.setSize(90,90);
 
 

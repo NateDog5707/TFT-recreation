@@ -70,15 +70,15 @@ public class TheGame {
         displayPlayerList();
         bal = 1000;
 
-        //internal frame
+        //internal frame field and bench
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
         c.ipadx = benchWidth;
         c.ipady = benchHeight;
-        c.gridy = 1;
-        c.anchor = GridBagConstraints.SOUTH;
+        c.gridy = 0;
+        //c.anchor = GridBagConstraints.SOUTH;
         intrFrameBench = new JInternalFrame("help");
         ((BasicInternalFrameUI)intrFrameBench.getUI()).setNorthPane(null);
         intrFrameBench.setTitle("Internal frame");
@@ -93,13 +93,13 @@ public class TheGame {
         fieldPH.add(intrFrameBench, c);
 
         //test two windows
-        c.fill = GridBagConstraints.HORIZONTAL;
+       /* c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTH;
         c.ipady = 50;
         c.ipadx = 50;
         c.gridy = 0;
         intrFrameBench.pack();
-        fieldPH.add(new JLabel("Field"), c);
+        fieldPH.add(new JLabel("Field"), c);*/
 
         action1Button.addActionListener(new ActionListener() {
             @Override
@@ -237,8 +237,14 @@ public class TheGame {
     public void updateTextArea(){
         countTextArea.setText(bal + "");
     }
-    public int getBenchWidth(){ return intrFrameBench.getWidth();}
-    public int getBenchHeight(){return intrFrameBench.getHeight();}
+    public int getBenchWidth(){
+        System.out.println("[TheGame] Width: " + intrFrameBench.getWidth());
+        return intrFrameBench.getWidth();
+    }
+    public int getBenchHeight(){
+        System.out.println("[TheGame] Height: " + intrFrameBench.getHeight());
+        return intrFrameBench.getHeight();
+    }
 
     public void resetGame(){
         listPlayers.clear();
