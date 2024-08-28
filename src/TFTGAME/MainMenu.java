@@ -41,7 +41,8 @@ public class MainMenu {
                 //debug size
                 System.out.println("[MainMenu] Bench dimensions: " + theTFTGame.getBenchFrame().getSize());
 
-                //player.getBench().initSlotsIcons(theTFTGame.getBenchFrame(),theTFTGame);
+                player.getBench().initSlotsIcons(theTFTGame.getBenchFrame(),theTFTGame);
+                player.getBench().initAnchorPoints(theTFTGame.getBenchFrame(), theTFTGame);
 
             }
         });

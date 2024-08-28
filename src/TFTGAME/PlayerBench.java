@@ -29,6 +29,7 @@ public class PlayerBench {
     private Point location;
     private final int fieldRows = 4;
     private final int fieldColumns = 7;
+    private final int heightOfBench = 125;
     private Point[][] anchorPointsField = new Point[fieldRows][fieldColumns]; //for gui
     private JLabel[][] unitField = new JLabel[fieldRows][fieldColumns]; // so the game knows
     private Point[] anchorPointsBench = new Point[9];
@@ -55,12 +56,20 @@ public class PlayerBench {
     public void initSlotsIcons (JInternalFrame intFrame, TheGame game){
         internalFrame = intFrame;
         //intFrame.setLayout(null); // called in TheGame on frame setup
+
+        //create a line that divides field and bench
+        JLabel divider = new JLabel();
+        divider.setBorder(unitBorder);
+        divider.setSize(game.getBenchWidth(),6);
+        divider.setLocation(0,game.getBenchHeight()-heightOfBench);
+        divider.setVisible(true);
+        internalFrame.add(divider);
+
         for (int i = 0; i < benchSize ; i++) {
             addingLabel = new JLabel();
             tempSlotholder[i] = addingLabel;
             addingLabel.setSize(90, 90);
             //TODO. solidfy location setting.
-            System.out.println("Help");
             addingLabel.setLocation(i * (game.getBenchWidth()/9 -1) +5, game.getBenchHeight() - (benchIconHeight + 20));
             //addingLabel.setLocation(i * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
             ImageIcon unitImageIcon = new ImageIcon("resources/images/champions/king_dedede.png");
@@ -75,6 +84,49 @@ public class PlayerBench {
             System.out.println("playerbench creation: " + intFrame.getComponentCount());
         }
 
+    }
+
+    public void initAnchorPoints(JInternalFrame intFrame, TheGame game){
+        JLabel anchorPointSee;
+        JLabel divider;
+        //gonna find dividing slots of 4 rows 7 columns first
+        {
+
+            for (int x = 0; x < fieldRows -1;x++){
+                divider = new JLabel();
+                divider.setVisible(true);
+                divider.setSize(game.getBenchWidth(), 2);
+                divider.setBorder(unitBorder);
+                divider.setLocation(0, (x+1) * (game.getBenchHeight()-heightOfBench)/(fieldRows ));
+                System.out.println("Differnce in Height: " + (game.getBenchHeight()-heightOfBench)/(fieldRows ));
+                internalFrame.add(divider);
+            }
+            for (int y = 0; y < fieldColumns -1; y++){
+                divider = new JLabel();
+                divider.setVisible(true);
+                divider.setSize(2, game.getBenchHeight()-heightOfBench);
+                divider.setBorder(unitBorder);
+                divider.setLocation((y+1) * (game.getBenchWidth())/(fieldColumns),0 );
+                System.out.println("Differnce in Width: " + (game.getBenchWidth())/(fieldColumns));
+                internalFrame.add(divider);
+
+            }
+
+
+        }
+        // vvv create the points
+        for (int x = 0; x < fieldRows; x++){
+            for (int y = 0; y < fieldColumns; y++){
+                anchorPointSee = new JLabel("Yeah");
+                anchorPointsField[x][y] = new Point(y * game.getBenchWidth()/fieldColumns , x * (game.getBenchHeight() - heightOfBench)/fieldRows); //x and y are reversed
+                anchorPointSee.setBorder(unitBorder);
+                unitAddListenerOnBench(anchorPointSee);
+                //anchorPointSee.setSize((game.getBenchWidth())/(fieldColumns) ,(game.getBenchHeight()-heightOfBench)/(fieldRows ));
+                anchorPointSee.setSize(50,50);
+                anchorPointSee.setLocation(anchorPointsField[x][y]);
+                intFrame.add(anchorPointSee);
+            }
+        }
     }
 
 
@@ -112,18 +164,16 @@ public class PlayerBench {
             intFrame.remove(tempSlotholder[index]);
         }
         // i need to set location
-        System.out.println("Help");
         addingLabel.setLocation(index * (game.getBenchWidth()/9 -1) +5, game.getBenchHeight() - (benchIconHeight + 20));
         //addingLabel.setLocation(index * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
         addingLabel.setSize(90,90);
-
 
         tempSlotholder[index] = addingLabel;
         unitAddListenerOnBench(addingLabel);
         unitAddListenerDraggable(addingLabel);
         intFrame.add(addingLabel);
         intFrame.updateUI();
-        ((BasicInternalFrameUI)intFrame.getUI()).setNorthPane(null);
+        ((BasicInternalFrameUI)intFrame.getUI()).setNorthPane(null); //just need to call this again b/c it resets
 
     }
 
@@ -213,7 +263,6 @@ public class PlayerBench {
             }
         });
         return theLabel;
-
 
     }
 
