@@ -30,6 +30,9 @@ public class PlayerBench {
     private final int fieldRows = 4;
     private final int fieldColumns = 7;
     private final int heightOfBench = 125;
+    private int fieldFrameHeight;
+    private final int anchorPointThreshW = 50;
+    private final int anchorPointThreshH = 38;
     private Point[][] anchorPointsField = new Point[fieldRows][fieldColumns]; //for gui
     private JLabel[][] unitField = new JLabel[fieldRows][fieldColumns]; // so the game knows
     private Point[] anchorPointsBench = new Point[9];
@@ -54,6 +57,7 @@ public class PlayerBench {
 
     //TODO: develop anchor points for field so units are in a respective slot.
     public void initSlotsIcons (JInternalFrame intFrame, TheGame game){
+        fieldFrameHeight = game.getBenchHeight();
         internalFrame = intFrame;
         //intFrame.setLayout(null); // called in TheGame on frame setup
 
@@ -117,14 +121,16 @@ public class PlayerBench {
         // vvv create the points
         for (int x = 0; x < fieldRows; x++){
             for (int y = 0; y < fieldColumns; y++){
-                anchorPointSee = new JLabel("Yeah");
-                anchorPointsField[x][y] = new Point(y * game.getBenchWidth()/fieldColumns , x * (game.getBenchHeight() - heightOfBench)/fieldRows); //x and y are reversed
+                /*anchorPointSee = new JLabel("Yeah", SwingConstants.CENTER);
+                unitField[x][y] = anchorPointSee;
                 anchorPointSee.setBorder(unitBorder);
-                unitAddListenerOnBench(anchorPointSee);
+                unitAddListenerOnBench(anchorPointSee);*/
+                //location
+                anchorPointsField[x][y] = new Point(y * game.getBenchWidth()/fieldColumns + ((game.getBenchWidth()/fieldColumns)/2), x * ((game.getBenchHeight() - heightOfBench)/fieldRows) + ((game.getBenchHeight() - heightOfBench)/fieldRows)/ 2); //x and y are reversed
                 //anchorPointSee.setSize((game.getBenchWidth())/(fieldColumns) ,(game.getBenchHeight()-heightOfBench)/(fieldRows ));
-                anchorPointSee.setSize(50,50);
+                /*anchorPointSee.setSize(50,50);
                 anchorPointSee.setLocation(anchorPointsField[x][y]);
-                intFrame.add(anchorPointSee);
+                intFrame.add(anchorPointSee);*/
             }
         }
     }
@@ -223,10 +229,38 @@ public class PlayerBench {
             @Override
             public void mousePressed(MouseEvent e) {
                 startPoint = SwingUtilities.convertPoint(theLabel, e.getPoint(), theLabel.getParent());
+                System.out.println("Pressed loc: " + startPoint);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                //check if near a point.
+                System.out.println("Released loc: " + location);
+
+                if (location.getY() > (fieldFrameHeight - heightOfBench)){
+                    //move to bench
+                }
+                //field points
+                else{
+                    System.out.println("hey");
+                    for (int i = 0 ; i < fieldRows;i++){
+                        // if within the range of height
+                        if (location.getY() - anchorPointsField[i][0].getY() <= anchorPointThreshH){
+                            for (int j = 0; j < fieldColumns; j++){
+                                if (location.getX() - anchorPointsField[0][j].getX() <= anchorPointThreshW){
+                                    //snap to the point i,j
+                                    //System.out.println(anchorPointsField[i][j]);
+                                    //theLabel.setLocation( (int) anchorPointsField[i][j].getY() - (benchIconHeight/2), (int) anchorPointsField[i][j].getX() - (benchIconWidth/2));
+                                    theLabel.setLocation( (int) anchorPointsField[i][j].getX() - (benchIconHeight/2), (int) anchorPointsField[i][j].getY() - (benchIconWidth/2));
+
+                                    //after the label itself moves, we should also show that the game variables know it moves in unitField
+
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
 
             }
 
