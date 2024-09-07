@@ -99,7 +99,12 @@ public class Shop {
                 else{
                     System.out.println(shopArray[0]);
                     int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 0);
-                    assert(benchIndexAdded >= 0 && benchIndexAdded <=8);
+                    //buyUnit can return -1 when errors of not enough bal or not enough bench space
+                    if (benchIndexAdded == -1){
+                        System.out.println("Error when buying");
+                        return;
+                    }
+
                     //gui
                     {
                         clearShopDisplay(0);

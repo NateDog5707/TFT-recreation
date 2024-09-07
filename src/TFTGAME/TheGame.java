@@ -238,11 +238,11 @@ public class TheGame {
         countTextArea.setText(bal + "");
     }
     public int getBenchWidth(){
-        System.out.println("[TheGame] Width: " + intrFrameBench.getWidth());
+        //System.out.println("[TheGame] Width: " + intrFrameBench.getWidth());
         return intrFrameBench.getWidth();
     }
     public int getBenchHeight(){
-        System.out.println("[TheGame] Height: " + intrFrameBench.getHeight());
+        //System.out.println("[TheGame] Height: " + intrFrameBench.getHeight());
         return intrFrameBench.getHeight();
     }
 
