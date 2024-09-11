@@ -14,6 +14,7 @@ public class PlayerBench {
     private final int benchSize = 9;
     private Player player;
     private Unit[] bench = null;
+    private Unit[][] field = null;
     private JPanel panelPlayerBench;
     private JLabel test;
     private JInternalFrame internalFrame;
@@ -146,7 +147,7 @@ public class PlayerBench {
         }
         //create the points FOR BENCH
         for (int x = 0; x < benchSize; x++){
-            anchorPointsBench[x] = new Point ( x * (game.getBenchWidth()/benchSize -1)+ ((game.getBenchWidth()/benchSize)/2), game.getBenchHeight()-(heightOfBench/2));
+            anchorPointsBench[x] = new Point ( x * (game.getBenchWidth()/benchSize -1) - 2 + ((game.getBenchWidth()/benchSize)/2), game.getBenchHeight()-(heightOfBench/2));
             /*anchorPointSee = new JLabel("Yeah");
             anchorPointSee.setBorder(unitBorder);
             anchorPointSee.setSize(50,50);
@@ -250,11 +251,13 @@ public class PlayerBench {
             public void mouseReleased(MouseEvent e) {
                 //check if near a point.
                 //System.out.println("Released loc: " + location);
+
+                //bench points
                 if (location.getY() > (fieldFrameHeight - heightOfBench)){
                     //move to bench
                     for (int i =0; i < benchSize; i++){
                         System.out.println(anchorPointsBench[i].getX());
-                        if (Math.abs(location.getX() - anchorPointsBench[i].getX()) <= anchorPointThreshW){
+                        if (Math.abs(location.getX() - anchorPointsBench[i].getX()) <= ((anchorPointThreshW) * ((float) 7/9))){
                             //snap to the point
                             theLabel.setLocation( (int) anchorPointsBench[i].getX() - (benchIconWidth/2), (fieldFrameHeight - benchIconHeight)-20);
                         }
