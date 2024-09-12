@@ -44,15 +44,9 @@ public class PlayerBench {
     }
 
     public PlayerBench(Player player){
-        if (player != null){
+        if (player != null) {
             this.player = player;
             this.bench = player.getUnitsOnBench();
-            test.setText("Bench");
-            //System.out.println("PLAYER BENCH DEBUG");
-        }
-        else{
-            //debug
-            test.setText("Not Good");
         }
     }
 
@@ -244,7 +238,7 @@ public class PlayerBench {
                 startPoint = SwingUtilities.convertPoint(theLabel, e.getPoint(), theLabel.getParent());
                 //System.out.println("Pressed loc: " + startPoint);
                 //i want to get the x,y coord of the field of the unit.
-
+                
             }
 
             @Override

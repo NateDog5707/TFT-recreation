@@ -374,8 +374,8 @@ public class Shop {
             }
             else{
                 player.setBalance(player.getBalance() - boughtUnit.getCost()); //new bal = old bal - cost!
-                //add unit to player's bench
                 shopArray[index] = null;
+                //add unit to player's bench
                 return player.addUnitBench(boughtUnit);
             }
 
