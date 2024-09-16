@@ -37,6 +37,9 @@ public class PlayerBench {
     private Point[][] anchorPointsField = new Point[fieldRows][fieldColumns]; //for gui
     private JLabel[][] unitField = new JLabel[fieldRows][fieldColumns]; // so the game knows
     private Point[] anchorPointsBench = new Point[9];
+    //below is for unit grabbing
+    private Unit grabbedUnit, swapUnit;
+    private int[] swapData = new int[6]; // [0, 3] are bench/field flags (0 = bench, 1 = field) , [1,2,4,5] is x,y indeces
 
 
     public PlayerBench(){
@@ -224,8 +227,7 @@ public class PlayerBench {
 
 
     public JLabel unitAddListenerDraggable(JLabel theLabel){
-        Unit grabbedUnit, swapUnit;
-        Point grabbedLoc, swapLoc; //x,y coord in field.
+        final int[] notDraggedYet = {1};
 
         theLabel.addMouseListener(new MouseListener() {
             int hovered = 0;
@@ -237,29 +239,77 @@ public class PlayerBench {
             public void mousePressed(MouseEvent e) {
                 startPoint = SwingUtilities.convertPoint(theLabel, e.getPoint(), theLabel.getParent());
                 //System.out.println("Pressed loc: " + startPoint);
+
                 //i want to get the x,y coord of the field of the unit.
-                
+                //check if in bench or field to pick between
+                if (startPoint.getY() > (fieldFrameHeight - heightOfBench)){
+                    //in bench
+                    for (int x = 0 ; x < benchSize;x++){
+                        //get the anchor poitns and get a 90x90 square aroudn them (Cuz the size of icons)
+                        if ((benchIconWidth/2) >= Math.abs(anchorPointsBench[x].getX() - startPoint.getX())){
+                            System.out.println("[mousePressed]: " + startPoint.getX() + " " + startPoint.getY());
+                            grabbedUnit = bench[x];
+                            swapData[0] = 0;
+                            swapData[1] = x;
+                            swapData[2] = 0;
+                            break;
+                        }
+                    }
+                }
+                else{
+                    //in field
+                    int foundPointFlag = 0;
+                    for (int y = 0; y < fieldRows; y++){
+                        if((benchIconHeight/2) >= Math.abs(anchorPointsField[y][0].getY() - startPoint.getY())){
+                            for(int x = 0; x < fieldColumns; x++){
+                                if ((benchIconWidth/2) >= Math.abs(anchorPointsField[y][x].getX() - startPoint.getX() )){
+                                    System.out.println("[mousePressed]: " + startPoint.getX() + " " + startPoint.getY());
+                                    //NULL rn b/c
+                                    //grabbedUnit = field[x][y];
+                                    swapData[0] = 1;
+                                    swapData[1] = x;
+                                    swapData[2] = y;
+                                    foundPointFlag = 1;
+                                    break;
+                                }
+                            }
+                            if (foundPointFlag == 1){
+                                break;
+                            }
+                        }
+                    }
+                }
+                System.out.println("begin: " + swapData[0] + " " + swapData[1] + " " + swapData[2]);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 //check if near a point.
                 //System.out.println("Released loc: " + location);
-
+                if (notDraggedYet[0] == 1){
+                    location = startPoint;
+                }
                 //bench points
                 if (location.getY() > (fieldFrameHeight - heightOfBench)){
                     //move to bench
                     for (int i =0; i < benchSize; i++){
-                        System.out.println(anchorPointsBench[i].getX());
+                        //System.out.println(anchorPointsBench[i].getX());
                         if (Math.abs(location.getX() - anchorPointsBench[i].getX()) <= ((anchorPointThreshW) * ((float) 7/9))){
                             //snap to the point
                             theLabel.setLocation( (int) anchorPointsBench[i].getX() - (benchIconWidth/2), (fieldFrameHeight - benchIconHeight)-20);
+
+                            //get the swap data and call swap
+                            swapData[3] = 0;
+                            swapData[4] = i;
+                            swapData[5] = 0;
+                            //call swap
                         }
                     }
 
                 }
                 //field points
                 else{
+                    int foundPointFlag = 0;
                     for (int i = 0 ; i < fieldRows;i++){
                         // if within the range of a row
                         if (Math.abs(location.getY() - anchorPointsField[i][0].getY()) <= anchorPointThreshH){
@@ -271,15 +321,23 @@ public class PlayerBench {
                                     theLabel.setLocation( (int) anchorPointsField[i][j].getX() - (benchIconHeight/2), (int) anchorPointsField[i][j].getY() - (benchIconWidth/2));
 
                                     //after the label itself moves, we should also show that the game variables know it moves in unitField
-
-                                    printUnitMap();
-                                    return;
+                                    swapData[3] = 1;
+                                    swapData[4] = j;
+                                    swapData[5] = i;
+                                    foundPointFlag = 1;
+                                    //printUnitMap(); //for debug
+                                    //return;
+                                    break;
                                 }
+                            }
+                            if(foundPointFlag == 1){
+                                break;
                             }
                         }
                     }
                 }
-                printUnitMap();
+                System.out.println("end:" + swapData[3] + " " + swapData[4] + " " + swapData[5]);
+                //printUnitMap();
             }
 
             @Override
@@ -301,6 +359,7 @@ public class PlayerBench {
         theLabel.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                notDraggedYet[0] = 0;
                 location = SwingUtilities.convertPoint(theLabel, e.getPoint(), theLabel.getParent());
                 if (theLabel.getParent().getBounds().contains(location)) {
                     Point endLoc = theLabel.getLocation();
@@ -348,8 +407,18 @@ public class PlayerBench {
                 map += "X ";
             }
         }
-        System.out.println("dawdwad");
         System.out.println(map);
+    }
+
+    public void swapUnits(){
+        //swapData, bench, and field
+        Unit temp;
+        if (swapData[0] == 0) {
+            bench[swapData[1]] = swapUnit;
+            if (swapData[3] == 0){
+                bench[swapData[4]] = grabbedUnit;
+            }
+        }
     }
 
 }
