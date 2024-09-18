@@ -50,6 +50,7 @@ public class PlayerBench {
         if (player != null) {
             this.player = player;
             this.bench = player.getUnitsOnBench();
+            this.field = new Unit[fieldRows][fieldColumns];
         }
     }
 
@@ -247,7 +248,7 @@ public class PlayerBench {
                     for (int x = 0 ; x < benchSize;x++){
                         //get the anchor poitns and get a 90x90 square aroudn them (Cuz the size of icons)
                         if ((benchIconWidth/2) >= Math.abs(anchorPointsBench[x].getX() - startPoint.getX())){
-                            System.out.println("[mousePressed]: " + startPoint.getX() + " " + startPoint.getY());
+                            //System.out.println("[mousePressed]: " + startPoint.getX() + " " + startPoint.getY());
                             grabbedUnit = bench[x];
                             swapData[0] = 0;
                             swapData[1] = x;
@@ -263,9 +264,9 @@ public class PlayerBench {
                         if((benchIconHeight/2) >= Math.abs(anchorPointsField[y][0].getY() - startPoint.getY())){
                             for(int x = 0; x < fieldColumns; x++){
                                 if ((benchIconWidth/2) >= Math.abs(anchorPointsField[y][x].getX() - startPoint.getX() )){
-                                    System.out.println("[mousePressed]: " + startPoint.getX() + " " + startPoint.getY());
+                                    //System.out.println("[mousePressed]: " + startPoint.getX() + " " + startPoint.getY());
                                     //NULL rn b/c
-                                    //grabbedUnit = field[x][y];
+                                    grabbedUnit = field[y][x];
                                     swapData[0] = 1;
                                     swapData[1] = x;
                                     swapData[2] = y;
@@ -286,11 +287,13 @@ public class PlayerBench {
             public void mouseReleased(MouseEvent e) {
                 //check if near a point.
                 //System.out.println("Released loc: " + location);
+                int goodSwap = 0;
                 if (notDraggedYet[0] == 1){
                     location = startPoint;
                 }
                 //bench points
                 if (location.getY() > (fieldFrameHeight - heightOfBench)){
+                    System.out.println("Released Bench");
                     //move to bench
                     for (int i =0; i < benchSize; i++){
                         //System.out.println(anchorPointsBench[i].getX());
@@ -302,24 +305,38 @@ public class PlayerBench {
                             swapData[3] = 0;
                             swapData[4] = i;
                             swapData[5] = 0;
+                            if (bench[i] != null){
+                                swapUnit = bench[i];
+                            }
+                            else{
+                                swapUnit = null;
+                            }
+
                             //call swap
+                            goodSwap = 1;
+                            swapUnits();
                         }
+                    }
+                    if (goodSwap != 1){
+                        //somehow not in the range to snap to a point, return back to original spot. try!
+                        theLabel.setLocation((int) anchorPointsBench[swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsBench[swapData[1]].getY() - (benchIconHeight/2));
+                        System.out.println("Drag Failed");
                     }
 
                 }
                 //field points
                 else{
+                    System.out.println("Released Field");
                     int foundPointFlag = 0;
+                    int dragFailed = 0;
                     for (int i = 0 ; i < fieldRows;i++){
                         // if within the range of a row
                         if (Math.abs(location.getY() - anchorPointsField[i][0].getY()) <= anchorPointThreshH){
                             for (int j = 0; j < fieldColumns; j++){
-
                                 if (Math.abs(location.getX() - anchorPointsField[0][j].getX()) <= anchorPointThreshW ){
                                     //snap to the point i,j
                                     //System.out.println(anchorPointsField[i][j]);
                                     theLabel.setLocation( (int) anchorPointsField[i][j].getX() - (benchIconHeight/2), (int) anchorPointsField[i][j].getY() - (benchIconWidth/2));
-
                                     //after the label itself moves, we should also show that the game variables know it moves in unitField
                                     swapData[3] = 1;
                                     swapData[4] = j;
@@ -327,13 +344,29 @@ public class PlayerBench {
                                     foundPointFlag = 1;
                                     //printUnitMap(); //for debug
                                     //return;
+                                    if (field[i][j] != null){
+                                        swapUnit = field[i][j];
+                                    }else{
+                                        swapUnit = null;
+                                    }
+                                    goodSwap = 1;
+                                    swapUnits();
                                     break;
                                 }
                             }
-                            if(foundPointFlag == 1){
+                            if(foundPointFlag == 1 || dragFailed == 1){
                                 break;
                             }
                         }
+                    }
+                    if (goodSwap != 1){
+                        if (swapData[0] == 1){
+                            theLabel.setLocation((int) anchorPointsField[swapData[2]][swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsField[swapData[2]][swapData[1]].getY() - (benchIconHeight/2));
+                        }
+                        else{
+                            theLabel.setLocation((int) anchorPointsBench[swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsBench[swapData[1]].getY() - (benchIconHeight/2));
+                        }
+                        System.out.println("Drag Failed");
                     }
                 }
                 System.out.println("end:" + swapData[3] + " " + swapData[4] + " " + swapData[5]);
@@ -386,9 +419,9 @@ public class PlayerBench {
     //debug to show all units present
     public void printUnitMap(){
         String map = "";
-        for (int i = 0; i < fieldColumns; i++){
-            for (int j = 0; j < fieldRows; j++){
-                if (unitField[j][i] != null){
+        for (int i = 0; i < fieldRows; i++){
+            for (int j = 0; j < fieldColumns; j++){
+                if (field[i][j] != null){
                     map += "O ";
                 }
                 else{
@@ -413,12 +446,49 @@ public class PlayerBench {
     public void swapUnits(){
         //swapData, bench, and field
         Unit temp;
-        if (swapData[0] == 0) {
-            bench[swapData[1]] = swapUnit;
-            if (swapData[3] == 0){
-                bench[swapData[4]] = grabbedUnit;
+        if (swapUnit != null){
+            if (swapData[0] == 0) {
+                bench[swapData[1]] = swapUnit;
+                if (swapData[3] == 0) {
+                    bench[swapData[4]] = grabbedUnit;
+                }else{
+                    field[swapData[5]][swapData[4]] = grabbedUnit;
+                }
             }
+            else{
+                field[swapData[2]][swapData[1]] = swapUnit;
+                if (swapData[3] == 0) {
+                    bench[swapData[4]] = grabbedUnit;
+                }else{
+                    field[swapData[5]][swapData[4]] = grabbedUnit;
+                }
+            }
+        }else{
+            //else no 2nd unit to swap back, just move the original unit
+            if (swapData[0] == 0) {
+                if (swapData[3] == 0) {
+                    bench[swapData[4]] = grabbedUnit;
+                }else{
+                    field[swapData[5]][swapData[4]] = grabbedUnit;
+                }
+                bench[swapData[1]] = null;
+            }
+            else{
+                if (swapData[3] == 0) {
+                    bench[swapData[4]] = grabbedUnit;
+                }else{
+                    field[swapData[5]][swapData[4]] = grabbedUnit;
+                }
+                field[swapData[2]][swapData[1]] = null;
+            }
+
         }
+        printUnitMap();
+//        System.out.println("swapped");
+        //do i need to reset swapData maybe
+        /*for (int i = 0; i < 6; i++){
+            swapData[i] = 0;
+        }*/
     }
 
 }
