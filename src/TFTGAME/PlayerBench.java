@@ -318,7 +318,9 @@ public class PlayerBench {
 
                             //call swap
                             goodSwap = 1;
-                            swapUnits(theLabel);
+                            if (swapData[0] != swapData[3] || swapData[1] != swapData[4] || swapData[2] != swapData[5]){
+                                swapUnits(theLabel);
+                            }
                             break;
                         }
                     }
@@ -356,7 +358,9 @@ public class PlayerBench {
                                         swapUnit = null;
                                     }
                                     goodSwap = 1;
-                                    swapUnits(theLabel);
+                                    if (swapData[0] != swapData[3] || swapData[1] != swapData[4] || swapData[2] != swapData[5]){
+                                        swapUnits(theLabel);
+                                    }
                                     swapUnit = null;
                                     break;
                                 }
@@ -471,60 +475,32 @@ public class PlayerBench {
     public void swapUnits(JLabel theLabel){
         //swapData, bench, and field
         Unit temp;
+        //put the original unit to the new space
+        if (swapData[3] == 0) {
+            bench[swapData[4]] = grabbedUnit;
+            unitBench[swapData[4]] = theLabel;
+        }else{
+            field[swapData[5]][swapData[4]] = grabbedUnit;
+            unitField[swapData[5]][swapData[4]] = theLabel;
+        }
+
+        //if there is a swap unit, move it to the original spot
         if (swapUnit != null){
             if (swapData[0] == 0) {
                 bench[swapData[1]] = swapUnit;
-                if (swapData[3] == 0) {
-                    bench[swapData[4]] = grabbedUnit;
-                }else{
-                    field[swapData[5]][swapData[4]] = grabbedUnit;
-                }
+                swapLabel.setLocation((int) anchorPointsBench[swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsBench[swapData[1]].getY() - (benchIconHeight/2));
             }
             else{
                 field[swapData[2]][swapData[1]] = swapUnit;
-                if (swapData[3] == 0) {
-                    bench[swapData[4]] = grabbedUnit;
-                }else{
-                    field[swapData[5]][swapData[4]] = grabbedUnit;
-                }
-            }
-
-            //gotta swap the swapLabel to the first unit's place
-            if (swapData[0] == 1){
                 swapLabel.setLocation((int) anchorPointsField[swapData[2]][swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsField[swapData[2]][swapData[1]].getY() - (benchIconHeight/2));
             }
-            else{
-                swapLabel.setLocation((int) anchorPointsBench[swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsBench[swapData[1]].getY() - (benchIconHeight/2));
-            }
-
-        }else{
-            //else no 2nd unit to swap back, just move the original unit
-/*            if (swapData[3] == 0) {
-                bench[swapData[4]] = grabbedUnit;
-                unitBench[swapData[4]] = theLabel;
-            }else{
-                field[swapData[5]][swapData[4]] = grabbedUnit;
-                unitField[swapData[5]][swapData[4]] = theLabel;
-            }*/
-
+        }
+        //else no 2nd unit to swap back, just move the original unit
+        else{
             if (swapData[0] == 0) {
-                if (swapData[3] == 0) {
-                    bench[swapData[4]] = grabbedUnit;
-                    unitBench[swapData[4]] = theLabel;
-                }else{
-                    field[swapData[5]][swapData[4]] = grabbedUnit;
-                    unitField[swapData[5]][swapData[4]] = theLabel;
-                }
                 bench[swapData[1]] = null;
             }
-            else{//original unit was on field.
-                if (swapData[3] == 0) {
-                    bench[swapData[4]] = grabbedUnit;
-                    unitBench[swapData[4]] = theLabel;
-                }else{
-                    field[swapData[5]][swapData[4]] = grabbedUnit;
-                    unitField[swapData[5]][swapData[4]] = theLabel;
-                }
+            else{
                 field[swapData[2]][swapData[1]] = null;
             }
 
