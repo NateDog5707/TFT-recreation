@@ -36,9 +36,11 @@ public class PlayerBench {
     private final int anchorPointThreshH = 50;
     private Point[][] anchorPointsField = new Point[fieldRows][fieldColumns]; //for gui
     private JLabel[][] unitField = new JLabel[fieldRows][fieldColumns]; // so the game knows
+    private JLabel[] unitBench = new JLabel[benchSize];
     private Point[] anchorPointsBench = new Point[9];
     //below is for unit grabbing
     private Unit grabbedUnit, swapUnit;
+    private JLabel swapLabel;
     private int[] swapData = new int[6]; // [0, 3] are bench/field flags (0 = bench, 1 = field) , [1,2,4,5] is x,y indeces
 
 
@@ -182,6 +184,7 @@ public class PlayerBench {
         // i need to set location
         addingLabel.setLocation(index * (game.getBenchWidth()/9 -1) +5, game.getBenchHeight() - (benchIconHeight + 20));
         addingLabel.setSize(90,90);
+        unitBench[index] = addingLabel;
 
         //unitAddListenerOnBench(addingLabel);
         unitAddListenerDraggable(addingLabel);
@@ -307,6 +310,7 @@ public class PlayerBench {
                             swapData[5] = 0;
                             if (bench[i] != null){
                                 swapUnit = bench[i];
+                                swapLabel = unitBench[i];
                             }
                             else{
                                 swapUnit = null;
@@ -314,7 +318,8 @@ public class PlayerBench {
 
                             //call swap
                             goodSwap = 1;
-                            swapUnits();
+                            swapUnits(theLabel);
+                            break;
                         }
                     }
                     if (goodSwap != 1){
@@ -346,11 +351,13 @@ public class PlayerBench {
                                     //return;
                                     if (field[i][j] != null){
                                         swapUnit = field[i][j];
+                                        swapLabel = unitField[i][j];
                                     }else{
                                         swapUnit = null;
                                     }
                                     goodSwap = 1;
-                                    swapUnits();
+                                    swapUnits(theLabel);
+                                    swapUnit = null;
                                     break;
                                 }
                             }
@@ -422,7 +429,16 @@ public class PlayerBench {
         for (int i = 0; i < fieldRows; i++){
             for (int j = 0; j < fieldColumns; j++){
                 if (field[i][j] != null){
-                    map += "O ";
+                    if (field[i][j].getName().equals("Kirby")) {
+                        map += "K ";
+                    }
+                    //map += "O ";
+                    else if(field[i][j].getName().equals("King Dedede")){
+                        map += "D ";
+                    }
+                    else{
+                        map += "O ";
+                    }
                 }
                 else{
                     map += "X ";
@@ -434,7 +450,16 @@ public class PlayerBench {
         map += "----------------\n";
         for (int k =0; k < benchSize;k++){
             if (bench[k] != null){
-                map += "O ";
+                if (bench[k].getName().equals("Kirby")) {
+                    map += "K ";
+                }
+                //map += "O ";
+                else if(bench[k].getName().equals("King Dedede")){
+                    map += "D ";
+                }
+                else{
+                    map += "O ";
+                }
             }
             else{
                 map += "X ";
@@ -443,7 +468,7 @@ public class PlayerBench {
         System.out.println(map);
     }
 
-    public void swapUnits(){
+    public void swapUnits(JLabel theLabel){
         //swapData, bench, and field
         Unit temp;
         if (swapUnit != null){
@@ -463,27 +488,50 @@ public class PlayerBench {
                     field[swapData[5]][swapData[4]] = grabbedUnit;
                 }
             }
+
+            //gotta swap the swapLabel to the first unit's place
+            if (swapData[0] == 1){
+                swapLabel.setLocation((int) anchorPointsField[swapData[2]][swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsField[swapData[2]][swapData[1]].getY() - (benchIconHeight/2));
+            }
+            else{
+                swapLabel.setLocation((int) anchorPointsBench[swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsBench[swapData[1]].getY() - (benchIconHeight/2));
+            }
+
         }else{
             //else no 2nd unit to swap back, just move the original unit
+/*            if (swapData[3] == 0) {
+                bench[swapData[4]] = grabbedUnit;
+                unitBench[swapData[4]] = theLabel;
+            }else{
+                field[swapData[5]][swapData[4]] = grabbedUnit;
+                unitField[swapData[5]][swapData[4]] = theLabel;
+            }*/
+
             if (swapData[0] == 0) {
                 if (swapData[3] == 0) {
                     bench[swapData[4]] = grabbedUnit;
+                    unitBench[swapData[4]] = theLabel;
                 }else{
                     field[swapData[5]][swapData[4]] = grabbedUnit;
+                    unitField[swapData[5]][swapData[4]] = theLabel;
                 }
                 bench[swapData[1]] = null;
             }
-            else{
+            else{//original unit was on field.
                 if (swapData[3] == 0) {
                     bench[swapData[4]] = grabbedUnit;
+                    unitBench[swapData[4]] = theLabel;
                 }else{
                     field[swapData[5]][swapData[4]] = grabbedUnit;
+                    unitField[swapData[5]][swapData[4]] = theLabel;
                 }
                 field[swapData[2]][swapData[1]] = null;
             }
 
         }
         printUnitMap();
+        swapUnit = null;
+
 //        System.out.println("swapped");
         //do i need to reset swapData maybe
         /*for (int i = 0; i < 6; i++){
