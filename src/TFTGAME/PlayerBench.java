@@ -299,7 +299,7 @@ public class PlayerBench {
                     System.out.println("Released Bench");
                     //move to bench
                     for (int i =0; i < benchSize; i++){
-                        //System.out.println(anchorPointsBench[i].getX());
+                        //if the distance between anchor point and release position is close enough, snap to position
                         if (Math.abs(location.getX() - anchorPointsBench[i].getX()) <= ((anchorPointThreshW) * ((float) 7/9))){
                             //snap to the point
                             theLabel.setLocation( (int) anchorPointsBench[i].getX() - (benchIconWidth/2), (fieldFrameHeight - benchIconHeight)-20);
@@ -486,17 +486,23 @@ public class PlayerBench {
 
         //if there is a swap unit, move it to the original spot
         if (swapUnit != null){
+            System.out.println("Swap: pair");
+            printSwapData();
             if (swapData[0] == 0) {
                 bench[swapData[1]] = swapUnit;
+                unitBench[swapData[1]] = swapLabel;
                 swapLabel.setLocation((int) anchorPointsBench[swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsBench[swapData[1]].getY() - (benchIconHeight/2));
             }
             else{
                 field[swapData[2]][swapData[1]] = swapUnit;
+                unitField[swapData[2]][swapData[1]] = swapLabel;
                 swapLabel.setLocation((int) anchorPointsField[swapData[2]][swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsField[swapData[2]][swapData[1]].getY() - (benchIconHeight/2));
             }
         }
-        //else no 2nd unit to swap back, just move the original unit
+        //else no 2nd unit to swap back, just clear the original space
         else{
+            System.out.println("Swap: single");
+            printSwapData();
             if (swapData[0] == 0) {
                 bench[swapData[1]] = null;
             }
@@ -515,4 +521,7 @@ public class PlayerBench {
         }*/
     }
 
+    public void printSwapData(){
+        System.out.println("" + swapData[0] + ", " + swapData[1] +", " + swapData[2] + ", " + swapData[3] +  ", " + swapData[4] + ", " + swapData[5]);
+    }
 }
