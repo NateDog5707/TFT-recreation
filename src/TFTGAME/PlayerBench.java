@@ -56,14 +56,17 @@ public class PlayerBench {
         }
     }
 
-    //TODO: develop anchor points for field so units are in a respective slot.
-    public void initSlotsIcons (JInternalFrame intFrame, TheGame game){
+
+    public void initAnchorPoints(JInternalFrame intFrame, TheGame game){
+        JLabel anchorPointSee;
+        JLabel divider;
+
         fieldFrameHeight = game.getBenchHeight();
         internalFrame = intFrame;
         //intFrame.setLayout(null); // called in TheGame on frame setup
 
         //create a line that divides field and bench
-        JLabel divider = new JLabel();
+        divider = new JLabel();
         divider.setBorder(unitBorder);
         divider.setSize(game.getBenchWidth(),6);
         divider.setLocation(0,game.getBenchHeight()-heightOfBench);
@@ -71,30 +74,6 @@ public class PlayerBench {
         internalFrame.add(divider);
 
 
-//        for (int i = 0; i < benchSize ; i++) {
-//            addingLabel = new JLabel();
-//            addingLabel.setSize(90, 90);
-//            //TODO. solidfy location setting.
-//            addingLabel.setLocation(i * (game.getBenchWidth()/9 -1) +5, game.getBenchHeight() - (benchIconHeight + 20));
-//            //addingLabel.setLocation(i * 100 + 5, game.getBenchHeight() - (benchIconHeight + 20));
-//            ImageIcon unitImageIcon = new ImageIcon("resources/images/champions/king_dedede.png");
-//            Image unitImage = unitImageIcon.getImage().getScaledInstance(benchIconWidth, benchIconHeight, Image.SCALE_DEFAULT);
-//            unitImageIcon = new ImageIcon(unitImage);
-//            addingLabel.setIcon(unitImageIcon);
-//            addingLabel.setBorder(unitBorder);
-//
-//            //unitAddListenerOnBench(addingLabel);
-//            unitAddListenerDraggable(addingLabel);
-//            intFrame.add(addingLabel);
-//            System.out.println("playerbench creation: " + intFrame.getComponentCount());
-//        }
-
-
-    }
-
-    public void initAnchorPoints(JInternalFrame intFrame, TheGame game){
-        JLabel anchorPointSee;
-        JLabel divider;
         //gonna find dividing slots of 4 rows 7 columns first
         {
 
@@ -187,7 +166,7 @@ public class PlayerBench {
         unitBench[index] = addingLabel;
 
         //unitAddListenerOnBench(addingLabel);
-        unitAddListenerDraggable(addingLabel);
+        unitAddListenerDraggable(intFrame, addingLabel);
         intFrame.add(addingLabel);
         intFrame.updateUI();
         ((BasicInternalFrameUI)intFrame.getUI()).setNorthPane(null); //just need to call this again b/c it resets
@@ -230,13 +209,18 @@ public class PlayerBench {
     }*/
 
 
-    public JLabel unitAddListenerDraggable(JLabel theLabel){
+    public JLabel unitAddListenerDraggable(JInternalFrame intFrame, JLabel theLabel){
         final int[] notDraggedYet = {1};
 
         theLabel.addMouseListener(new MouseListener() {
             int hovered = 0;
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == 3){
+                    intFrame.remove(theLabel);
+                    intFrame.revalidate();
+                    intFrame.repaint();
+                }
             }
 
             @Override
@@ -296,7 +280,7 @@ public class PlayerBench {
                 }
                 //bench points
                 if (location.getY() > (fieldFrameHeight - heightOfBench)){
-                    System.out.println("Released Bench");
+                    //System.out.println("Released Bench");
                     //move to bench
                     for (int i =0; i < benchSize; i++){
                         //if the distance between anchor point and release position is close enough, snap to position
@@ -333,7 +317,7 @@ public class PlayerBench {
                 }
                 //field points
                 else{
-                    System.out.println("Released Field");
+                    //System.out.println("Released Field");
                     int foundPointFlag = 0;
                     int dragFailed = 0;
                     for (int i = 0 ; i < fieldRows;i++){
@@ -380,7 +364,7 @@ public class PlayerBench {
                         System.out.println("Drag Failed");
                     }
                 }
-                System.out.println("end:" + swapData[3] + " " + swapData[4] + " " + swapData[5]);
+                //System.out.println("end:" + swapData[3] + " " + swapData[4] + " " + swapData[5]);
                 //printUnitMap();
             }
 
@@ -486,8 +470,8 @@ public class PlayerBench {
 
         //if there is a swap unit, move it to the original spot
         if (swapUnit != null){
-            System.out.println("Swap: pair");
-            printSwapData();
+            //System.out.println("Swap: pair");
+            //printSwapData();
             if (swapData[0] == 0) {
                 bench[swapData[1]] = swapUnit;
                 unitBench[swapData[1]] = swapLabel;
@@ -501,8 +485,8 @@ public class PlayerBench {
         }
         //else no 2nd unit to swap back, just clear the original space
         else{
-            System.out.println("Swap: single");
-            printSwapData();
+            //System.out.println("Swap: single");
+            //printSwapData();
             if (swapData[0] == 0) {
                 bench[swapData[1]] = null;
             }

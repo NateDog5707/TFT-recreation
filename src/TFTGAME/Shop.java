@@ -389,6 +389,15 @@ public class Shop {
 
     }
 
+    //called when player wants to sell unit
+    //called with middle clicking over a unitLabel
+    public void sellUnit(Player player, Unit unitSold){
+        player.setBalance(player.getBalance() + unitSold.getCost());
+        addUnitBackToPool(unitSold, unitSold.getCost());
+        return;
+    }
+
+
     /**
      * want to remove unit's displayed image from shop slot if bought
      * @param index which index of the array to remove, handles 0-4
