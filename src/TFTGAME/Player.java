@@ -44,6 +44,7 @@ public class Player {
     public void createNewBench(){
         benchObj = new PlayerBench(this);
     }
+
     public int addUnitBench(Unit added){
         //find first open spot in bench, then acquire index and add unit
         //linear search works

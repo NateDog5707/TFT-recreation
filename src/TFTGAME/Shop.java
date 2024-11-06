@@ -40,6 +40,7 @@ public class Shop {
     private JLabel shop4LabelCost;
     private JLabel shop5LabelCost;
     private JButton buyEXPButton;
+    private int shopPanelHeight;
 
     private BufferedImage myPicture;
     /**
@@ -52,16 +53,13 @@ public class Shop {
     ImageIcon[] imageIcons = new ImageIcon[5];
     Image[] images = new Image[5];
 
-    public Shop(){
-        this((TheGame) null);
+    private int shopHeightSetup = 1;
 
-    }
 
     public Shop (TheGame gamescreen){
         theTFTGame = gamescreen;
         //create uicomponents
         TheGame.initializeShop();
-
         //initialize first shop
         for (int i = 0; i < 5 ;i++){
             shopArray[i] = rerollShopUnit(1, i);
@@ -77,6 +75,8 @@ public class Shop {
         shopImage3.setIcon(imageIcons[2]);
         shopImage4.setIcon(imageIcons[3]);
         shopImage5.setIcon(imageIcons[4]);
+        shopPanelHeight = panel.getHeight();
+        System.out.println("initial shop height: " + shopPanelHeight);
         //end of initalization
 
 
@@ -88,11 +88,13 @@ public class Shop {
                 System.out.println("size of 1c pool: " + TheGame.getListOneCosts().size());
             }
         });
-        /*shopImage1.addComponentListener(new ComponentAdapter() {
-        });*/
+
         buyButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //theTFTGame.getTheShop().freezeShopPanelSize();
+                /*panel.setPreferredSize(panel.getSize());
+                System.out.println(panel.getBackground());*/
                 if (shopArray[0] == null){
                     System.out.println("hey nothing in this shop");
                 }
@@ -109,15 +111,78 @@ public class Shop {
                     {
                         clearShopDisplay(0);
                         theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
-
+                        System.out.println("outside call:" +panel.getHeight());
                     }
                 }
+
             }
         });
         buyButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (shopArray[1] == null){
+                    System.out.println("hey nothing in this shop");
+                } else{
+                    System.out.println(shopArray[1]);
+                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 1);
+                    if (benchIndexAdded == -1){
+                        System.out.println("Error when buying");
+                        return;
+                    }
+                    clearShopDisplay(1);
+                    theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                }
+            }
+        });
+        buyButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (shopArray[2] == null){
+                    System.out.println("hey nothing in this shop");
+                } else{
+                    System.out.println(shopArray[2]);
+                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 2);
+                    if (benchIndexAdded == -1){
+                        System.out.println("Error when buying");
+                        return;
+                    }
+                    clearShopDisplay(2);
+                    theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                }
+            }
+        });
+        buyButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (shopArray[3] == null){
+                    System.out.println("hey nothing in this shop");
+                } else{
+                    System.out.println(shopArray[3]);
+                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 3);
+                    if (benchIndexAdded == -1){
+                        System.out.println("Error when buying");
+                        return;
+                    }
+                    clearShopDisplay(3);
+                    theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                }
+            }
+        });
+        buyButton5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (shopArray[4] == null){
+                    System.out.println("hey nothing in this shop");
+                } else{
+                    System.out.println(shopArray[4]);
+                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 4);
+                    if (benchIndexAdded == -1){
+                        System.out.println("Error when buying");
+                        return;
+                    }
+                    clearShopDisplay(4);
+                    theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                }
             }
         });
     }
@@ -403,33 +468,56 @@ public class Shop {
      * @param index which index of the array to remove, handles 0-4
      */
     public void clearShopDisplay(int index){
+        if (shopHeightSetup == 1){
+            shopPanelHeight = panel.getHeight();
+            shopHeightSetup = 0;
+            panel.setBorder(null);
+            panel.updateUI();
+            shopPanelHeight = panel.getHeight();
+            //panel.setMinimumSize(new Dimension(panel.getWidth(), shopPanelHeight));
+            panel.setPreferredSize(new Dimension(panel.getWidth(), shopPanelHeight));
+            panel.setBorder(theTFTGame.getShopBorder());
+            panel.updateUI();
+        }
+        /*//panel.setBorder(null);
+        panel.setPreferredSize(new Dimension(panel.getWidth(), shopPanelHeight));
+        //panel.setBorder(theTFTGame.getShopBorder());*/
+        System.out.println("inside after: " + panel.getHeight());
+
+
         switch(index){
             case 0:
-                buyButton1.setVisible(false);
-                shopImage1.setIcon(null);
+                buyButton1.setEnabled(false);
+                //shopImage1.setIcon(null);
                 shop1Label.setText("");
                 shop1LabelCost.setText("");
+                BufferedImage bImage = new BufferedImage(shopIconWidth, shopIconHeight, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = bImage.createGraphics();
+                g2d.setColor(panel.getBackground());
+                g2d.setColor(new Color(238,238,238));
+                g2d.fillRect(0, 0, shopIconWidth, shopIconHeight);
+                shopImage1.setIcon(new ImageIcon(bImage));
                 break;
             case 1:
-                buyButton2.setVisible(false);
+                buyButton2.setEnabled(false);
                 shopImage2.setIcon(null);
                 shop2Label.setText("");
                 shop2LabelCost.setText("");
                 break;
             case 2:
-                buyButton3.setVisible(false);
+                buyButton3.setEnabled(false);
                 shopImage3.setIcon(null);
                 shop3Label.setText("");
                 shop3LabelCost.setText("");
                 break;
             case 3:
-                buyButton4.setVisible(false);
+                buyButton4.setEnabled(false);
                 shopImage4.setIcon(null);
                 shop4Label.setText("");
                 shop4LabelCost.setText("");
                 break;
             case 4:
-                buyButton5.setVisible(false);
+                buyButton5.setEnabled(false);
                 shopImage5.setIcon(null);
                 shop5Label.setText("");
                 shop5LabelCost.setText("");
@@ -446,28 +534,28 @@ public class Shop {
         if (shopArray[index] != null) {
             switch (index) {
                 case 0:
-                    buyButton1.setVisible(true);
+                    buyButton1.setEnabled(true);
                     shop1Label.setText("" + shopArray[index].getName());
                     shop1LabelCost.setText("" + shopArray[index].getCost() + "g");
                     break;
                 //shop1Label.setText()
                 case 1:
-                    buyButton2.setVisible(true);
+                    buyButton2.setEnabled(true);
                     shop2Label.setText("" + shopArray[index].getName());
                     shop2LabelCost.setText("" + shopArray[index].getCost() + "g");
                     break;
                 case 2:
-                    buyButton3.setVisible(true);
+                    buyButton3.setEnabled(true);
                     shop3Label.setText("" + shopArray[index].getName());
                     shop3LabelCost.setText("" + shopArray[index].getCost() + "g");
                     break;
                 case 3:
-                    buyButton4.setVisible(true);
+                    buyButton4.setEnabled(true);
                     shop4Label.setText("" + shopArray[index].getName());
                     shop4LabelCost.setText("" + shopArray[index].getCost() + "g");
                     break;
                 case 4:
-                    buyButton5.setVisible(true);
+                    buyButton5.setEnabled(true);
                     shop5Label.setText("" + shopArray[index].getName());
                     shop5LabelCost.setText("" + shopArray[index].getCost() + "g");
                     break;
@@ -478,5 +566,4 @@ public class Shop {
     }
 
 }
-
 

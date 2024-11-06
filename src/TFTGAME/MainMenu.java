@@ -40,9 +40,8 @@ public class MainMenu {
                 //here to call Player Bench init cuz sizes of modules don't get established until after constructor
                 //debug size
                 System.out.println("[MainMenu] Bench dimensions: " + theTFTGame.getBenchFrame().getSize());
-                
-                player.getBench().initAnchorPoints(theTFTGame.getBenchFrame(), theTFTGame);
 
+                player.getBench().initAnchorPoints(theTFTGame.getBenchFrame(), theTFTGame);
             }
         });
         EXITButton.addActionListener(new ActionListener() {

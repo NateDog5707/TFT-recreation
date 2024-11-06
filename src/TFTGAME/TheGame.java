@@ -31,6 +31,8 @@ public class TheGame {
     private JPanel shopPanel;
     private JTextArea playerListTextArea;
     private JPanel fieldPH;
+    private JTextArea playerExpTA;
+    private JPanel playerLevelImage;
     private static final LineBorder shopBorder = new LineBorder (new Color(229, 166, 39), 6);
     private static final LineBorder benchBorder = new LineBorder( new Color(53, 235, 174), 6);
     private JInternalFrame intrFrameBench;
@@ -46,6 +48,7 @@ public class TheGame {
     }*/
     public TheGame(){
         //createUIComponents is called
+
         gameFrame = new JFrame("The GAME!!!");
         gameFrame.setSize(windowSizeWidth,windowSizeHeight);
         gameFrame.setLocationRelativeTo(null);  //centers the frame
@@ -92,15 +95,6 @@ public class TheGame {
         intrFrameBench.pack();
         fieldPH.add(intrFrameBench, c);
 
-        //test two windows
-       /* c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.NORTH;
-        c.ipady = 50;
-        c.ipadx = 50;
-        c.gridy = 0;
-        intrFrameBench.pack();
-        fieldPH.add(new JLabel("Field"), c);*/
-
         action1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,8 +104,10 @@ public class TheGame {
                 updateTextArea();
                 // countTextArea.setText(bal + "");
                 //Window owner = getOwner();
-                System.out.println("fieldPH size: " + fieldPH.getSize());
-                System.out.println("intrFrameBench size: " + intrFrameBench.getContentPane().getSize());
+                //System.out.println("fieldPH size: " + fieldPH.getSize());
+                //System.out.println("intrFrameBench size: " + intrFrameBench.getContentPane().getSize());
+                System.out.println("Shop Height: " + shopPanel.getHeight());
+
             }
         });
         quitButton.addActionListener(new ActionListener() {
@@ -143,6 +139,7 @@ public class TheGame {
 
         //create a border!
         shopPanel.setBorder(shopBorder);
+        System.out.println("TheGame-CreateUIComponents shopPanelSize: " + shopPanel.getSize());
 
     }
 
@@ -223,7 +220,7 @@ public class TheGame {
         }
     }
 
-
+    public Shop getTheShop(){return theShop;}
     public static int getbal(){
         return bal;
     }
@@ -245,6 +242,10 @@ public class TheGame {
         //System.out.println("[TheGame] Height: " + intrFrameBench.getHeight());
         return intrFrameBench.getHeight();
     }
+
+    public LineBorder getShopBorder(){return shopBorder;}
+    public LineBorder getBenchBorder(){return benchBorder;}
+
 
     public void resetGame(){
         listPlayers.clear();
