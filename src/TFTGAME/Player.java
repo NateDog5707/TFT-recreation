@@ -18,6 +18,7 @@ public class Player {
     private Unit[] unitsOnBench = new Unit[9];
     private Unit[] unitsActive = new Unit[10];
     private PlayerBench benchObj;
+    private TheGame theTFTGame;
 
 
 

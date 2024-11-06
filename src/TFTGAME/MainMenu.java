@@ -73,5 +73,7 @@ public class MainMenu {
     public static String getUsername(){return username;}
     public static Player getPlayer(){return player;}
 
+    public static TheGame getTheTFTGame(){return theTFTGame;}
+
 
 }
