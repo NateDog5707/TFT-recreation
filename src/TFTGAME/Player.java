@@ -15,12 +15,13 @@ public class Player {
     private int streak;
     private int hp;
 
-    private Unit[] unitsOnBench = new Unit[9];
-    private Unit[] unitsActive = new Unit[10];
+    private Unit[] unitsOnBench = new Unit[benchSize];
+    private Unit[] unitsActive = new Unit[fieldSize];
     private PlayerBench benchObj;
     private TheGame theTFTGame;
 
-
+    static final int benchSize = 9;
+    static final int fieldSize = 10;
 
 
     public Player(){
@@ -49,7 +50,7 @@ public class Player {
     public int addUnitBench(Unit added){
         //find first open spot in bench, then acquire index and add unit
         //linear search works
-        for (int i = 0; i < 9; i++){
+        for (int i = 0; i < benchSize; i++){
             if (unitsOnBench[i] == null) {
                 unitsOnBench[i] = added;
                 return i;
@@ -60,7 +61,7 @@ public class Player {
 
     public Unit removeUnitBench(Unit removed){
         try {
-            for (int i = 0; i < 9; i++){
+            for (int i = 0; i < benchSize; i++){
                 if (unitsOnBench[i] == removed){
                     unitsOnBench[i] = null;
                     return removed;
@@ -90,7 +91,7 @@ public class Player {
         }
     }
     public boolean isBenchFull(){
-        for (int i = 0; i < 9; i++){
+        for (int i = 0; i < benchSize; i++){
             if (unitsOnBench[i] == null){
                 return false;
             }
@@ -98,6 +99,40 @@ public class Player {
         return true;
     }
 
+    public Unit addUnitField(Unit theUnit){
+        for (int i = 0; i < fieldSize; i++) {
+            if (unitsActive[i] == null) {
+                unitsActive[i] = theUnit;
+                return theUnit;
+            }
+        }
+        return null;
+    }
+    public Unit removeUnitField(Unit theUnit){
+        for (int i = 0;i < fieldSize; i++){
+            if (unitsActive[i] == theUnit){
+                unitsActive[i] = null;
+                return theUnit;
+            }
+        }
+        return null;
+    }
+
+
+    public void swapUnitsBenchField(Unit benchUnit, Unit fieldUnit){
+        if (benchUnit != null && fieldUnit != null){
+            Unit temp = removeUnitBench(benchUnit);
+            addUnitBench(removeUnitField(fieldUnit));
+            addUnitField(temp);
+        }
+        else if (benchUnit != null){
+            addUnitField(removeUnitBench(benchUnit));
+        }
+        else{
+            addUnitBench(removeUnitField(fieldUnit));
+        }
+
+    }
 
 
     public PlayerBench getBench(){

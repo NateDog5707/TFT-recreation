@@ -456,9 +456,14 @@ public class Shop {
 
     //called when player wants to sell unit
     //called with middle clicking over a unitLabel
-    public void sellUnit(Player player, Unit unitSold){
+    public void sellUnit(Player player, Unit unitSold, int benchField){
         //remove it from game too.
-
+        if (benchField == 0) {
+            player.removeUnitBench(unitSold);
+        }
+        else{
+            player.removeUnitField(unitSold);
+        }
         player.setBalance(player.getBalance() + unitSold.getCost());
         addUnitBackToPool(unitSold, unitSold.getCost());
         return;

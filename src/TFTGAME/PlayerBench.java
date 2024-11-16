@@ -11,7 +11,7 @@ import java.awt.event.*;
 public class PlayerBench {
     private final int benchIconWidth = 90;
     private final int benchIconHeight = 90;
-    private final int benchSize = 9;
+    static final int benchSize = 9;
     private Player player;
     private Unit[] bench = null;
     private Unit[][] field = null;
@@ -184,7 +184,8 @@ public class PlayerBench {
                     intFrame.remove(theLabel);
                     intFrame.revalidate();
                     intFrame.repaint();
-                    MainMenu.getTheTFTGame().getTheShop().sellUnit(player, theLabel.getTheUnit());
+                    MainMenu.getTheTFTGame().getTheShop().sellUnit(player, theLabel.getTheUnit(), theLabel.onBench);
+
                 }
             }
 
@@ -374,7 +375,7 @@ public class PlayerBench {
                 //System.out.println(theLabel.getParent());
                 location = SwingUtilities.convertPoint(theLabel, e.getPoint(), theLabel.getParent());
                 if (theLabel.getParent().getBounds().contains(location)) {
-                    System.out.print("a");
+                    //System.out.print("a");
                     Point endLoc = theLabel.getLocation();
                     endLoc.translate(location.x - startPoint.x, location.y - startPoint.y);
                     endLoc.x = Math.max(endLoc.x, 0);
