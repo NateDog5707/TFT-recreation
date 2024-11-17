@@ -45,6 +45,7 @@ public class UnitLabel extends JLabel {
         onBench = val;
     }
     public void setBenchAndCoords(int val, int x, int y){
+        System.out.println("x and y: " + x + ", " + y);
         setOnBench(val);
         setCoords(x,y);
     }
