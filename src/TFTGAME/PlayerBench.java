@@ -27,8 +27,8 @@ public class PlayerBench {
     // for mouse dragging
     private Point startPoint;
     private Point location;
-    private final int fieldRows = 4;
-    private final int fieldColumns = 7;
+    static final int fieldRows = 4;
+    static final int fieldColumns = 7;
     private final int heightOfBench = 125;
     private int fieldFrameHeight;
     private final int anchorPointThreshW = 68;
@@ -51,7 +51,7 @@ public class PlayerBench {
         if (player != null) {
             this.player = player;
             this.bench = player.getUnitsOnBench();
-            this.field = new Unit[fieldRows][fieldColumns];
+            this.field = player.getUnitsOnField();
         }
     }
 
@@ -184,7 +184,7 @@ public class PlayerBench {
                     intFrame.remove(theLabel);
                     intFrame.revalidate();
                     intFrame.repaint();
-                    MainMenu.getTheTFTGame().getTheShop().sellUnit(player, theLabel.getTheUnit(), theLabel.onBench);
+                    MainMenu.getTheTFTGame().getTheShop().sellUnit(player, theLabel.getTheUnit(), theLabel.onBench, theLabel.coordX, theLabel.coordY);
 
                 }
             }
