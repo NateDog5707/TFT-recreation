@@ -124,7 +124,7 @@ public class PlayerBench {
         }
         //create the points FOR BENCH
         for (int x = 0; x < benchSize; x++) {
-            anchorPointsBench[x] = new Point(x * (game.getBenchWidth() / benchSize - 1) - 2 + ((game.getBenchWidth() / benchSize) / 2), game.getBenchHeight() - (heightOfBench / 2));
+            anchorPointsBench[x] = new Point(x * (game.getBenchWidth() / benchSize - 1) - 2 + ((game.getBenchWidth() / benchSize) / 2), game.getBenchHeight() - (heightOfBench / 2) - 3);
             /*anchorPointSee = new JLabel("Yeah");
             anchorPointSee.setBorder(unitBorder);
             anchorPointSee.setSize(50,50);
@@ -156,7 +156,8 @@ public class PlayerBench {
         addingLabel.setBorder(unitBorder);
 
         // i need to set location
-        addingLabel.setLocation(index * (game.getBenchWidth()/9 -1) +5, game.getBenchHeight() - (benchIconHeight + 20));
+        //addingLabel.setLocation(index * (game.getBenchWidth()/9 -1) +5, game.getBenchHeight() - (benchIconHeight + 20));
+        addingLabel.setLocation((int) anchorPointsBench[index].getX()-(benchIconWidth/2), (int) anchorPointsBench[index].getY() - (benchIconHeight/2));
         addingLabel.setSize(90,90);
         unitBench[index] = addingLabel;
 
@@ -226,6 +227,7 @@ public class PlayerBench {
                         //if the distance between anchor point and release position is close enough, snap to position
                         if (Math.abs(location.getX() - anchorPointsBench[i].getX()) <= ((anchorPointThreshW) * ((float) 7/9))){
                             //snap to the point
+                            //theLabel.setLocation( (int) anchorPointsBench[i].getX() - (benchIconWidth/2), (int) anchorPointsBench[i].getY() - (benchIconHeight/2));
                             theLabel.setLocation( (int) anchorPointsBench[i].getX() - (benchIconWidth/2), (fieldFrameHeight - benchIconHeight)-20);
 
                             //get the swap data and call swap
@@ -426,13 +428,13 @@ public class PlayerBench {
             if (swapData[0] == 0) {
                 bench[swapData[1]] = swapUnit;
                 unitBench[swapData[1]] = swapLabel;
-                swapLabel.setLocation((int) anchorPointsBench[swapData[1]].getX() - (benchIconHeight/2), (int)anchorPointsBench[swapData[1]].getY() - (benchIconHeight/2));
+                swapLabel.setLocation((int) anchorPointsBench[swapData[1]].getX() - (benchIconWidth/2), (int)anchorPointsBench[swapData[1]].getY() - (benchIconHeight/2));
                 swapLabel.setBenchAndCoords(0,swapData[1], 0);
             }
             else{
                 field[swapData[1]][swapData[2]] = swapUnit;
                 unitField[swapData[1]][swapData[2]] = swapLabel;
-                swapLabel.setLocation((int) anchorPointsField[swapData[1]][swapData[2]].getX() - (benchIconHeight/2), (int)anchorPointsField[swapData[1]][swapData[2]].getY() - (benchIconHeight/2));
+                swapLabel.setLocation((int) anchorPointsField[swapData[1]][swapData[2]].getX() - (benchIconWidth/2), (int)anchorPointsField[swapData[1]][swapData[2]].getY() - (benchIconHeight/2));
                 swapLabel.setBenchAndCoords(1, swapData[1], swapData[2]);
             }
         }

@@ -33,6 +33,7 @@ public class TheGame {
     private JPanel fieldPH;
     private JTextArea playerExpTA;
     private JPanel playerLevelImage;
+    private JButton fightButton;
     private static final LineBorder shopBorder = new LineBorder (new Color(229, 166, 39), 6);
     private static final LineBorder benchBorder = new LineBorder( new Color(53, 235, 174), 6);
     private JInternalFrame intrFrameBench;
@@ -126,7 +127,13 @@ public class TheGame {
         });
 
 
-
+        fightButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a new window pop up that opens a wide gameboard that starts a real-time fight between units!
+                //create a new java file and give it UI right??
+            }
+        });
     } //end constructor
 
 

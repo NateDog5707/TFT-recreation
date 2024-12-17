@@ -2,14 +2,14 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="TFTGAME.TheGame">
   <grid id="27dc6" binding="TheGamePanel" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="78" y="20" width="379" height="460"/>
+      <xy x="78" y="20" width="457" height="460"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
       <component id="43261" class="javax.swing.JButton" binding="quitButton">
         <constraints>
-          <grid row="8" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="1" row-span="1" col-span="5" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0" ipady="5"/>
         </constraints>
         <properties>
@@ -32,7 +32,7 @@
       </grid>
       <component id="e626" class="javax.swing.JTextArea" binding="playerListTextArea">
         <constraints>
-          <grid row="1" column="4" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="2" indent="0" use-parent-layout="false">
+          <grid row="1" column="4" row-span="3" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="2" indent="0" use-parent-layout="false">
             <preferred-size width="60" height="180"/>
           </grid>
           <gridbag weightx="0.0" weighty="0.0"/>
@@ -63,7 +63,7 @@
       </hspacer>
       <component id="b9357" class="javax.swing.JLabel" binding="msgWelcome">
         <constraints>
-          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0" ipady="20"/>
         </constraints>
         <properties>
@@ -72,7 +72,7 @@
       </component>
       <component id="db158" class="javax.swing.JTextArea" binding="countTextArea">
         <constraints>
-          <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+          <grid row="6" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="50" height="40"/>
           </grid>
           <gridbag weightx="0.0" weighty="0.0" ipady="5"/>
@@ -86,7 +86,7 @@
       <component id="ad955" class="javax.swing.JButton" binding="action1Button">
         <constraints>
           <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0" ipadx="50"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <text value="This does something"/>
@@ -112,6 +112,15 @@
         <properties>
           <editable value="false"/>
           <text value="-99/-99"/>
+        </properties>
+      </component>
+      <component id="e7729" class="javax.swing.JButton" binding="fightButton">
+        <constraints>
+          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0" ipadx="20"/>
+        </constraints>
+        <properties>
+          <text value="Fight!"/>
         </properties>
       </component>
     </children>
