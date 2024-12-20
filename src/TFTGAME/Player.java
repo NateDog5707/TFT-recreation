@@ -150,7 +150,6 @@ public class Player {
     public Unit[] getUnitsOnBench(){return unitsOnBench;}
     public Unit[][] getUnitsOnField(){return unitsOnField;}
 
-
     //debug
 
 }

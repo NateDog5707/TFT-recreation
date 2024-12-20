@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class TheGame {
@@ -20,8 +22,9 @@ public class TheGame {
     private static ArrayList<Unit> listOneCosts, listTwoCosts, listThreeCosts, listFourCosts, listFiveCosts;
     private static ArrayList<Player> listPlayers;
     public Player mainPlayer;
+    public PlayerBench playerBench;
     private static int playerCount = 0;
-
+    private Battlefield battlefield;
     public JFrame gameFrame /*= new JFrame("The GAME!!!")*/;
     public JPanel TheGamePanel;
     private JLabel msgWelcome;
@@ -68,6 +71,9 @@ public class TheGame {
 
         //mainPlayer = new Player(MainMenu.getUsername());
         mainPlayer = MainMenu.getPlayer();
+        playerBench = mainPlayer.getBench();
+
+        battlefield = new Battlefield(this);
 
         //initialize the players
         TheGame.addPlayer(mainPlayer);
@@ -111,6 +117,30 @@ public class TheGame {
 
             }
         });
+
+        Timer timer = new Timer();
+        TimerTask endfight = new TimerTask(){
+            @Override
+            public void run(){
+                System.out.println("Ending fight");
+                battlefield.bfFrame.setVisible(false);
+
+            }
+        };
+        //int fightTime = 30000; // 30 seconds
+        int fightTime = 2000; //testing
+        fightButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a new window pop up that opens a wide gameboard that starts a real-time fight between units!
+                //create a new java file and give it UI right??
+                battlefield.bfFrame.setSize(getBenchWidth(), (int)(getBenchHeight()*1.4));
+                battlefield.bfFrame.setVisible(true);
+                timer.schedule(endfight, fightTime);
+            }
+        });
+
+
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,13 +157,6 @@ public class TheGame {
         });
 
 
-        fightButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Create a new window pop up that opens a wide gameboard that starts a real-time fight between units!
-                //create a new java file and give it UI right??
-            }
-        });
     } //end constructor
 
 
@@ -227,6 +250,16 @@ public class TheGame {
         }
     }
 
+    public void resetGame(){
+        listPlayers.clear();
+        theShop.clearShopArray();
+        listOneCosts.clear();
+        listTwoCosts.clear();
+        listThreeCosts.clear();
+        listFourCosts.clear();
+        listFiveCosts.clear();
+    }
+
     public Shop getTheShop(){return theShop;}
     public static int getbal(){
         return bal;
@@ -253,15 +286,9 @@ public class TheGame {
     public LineBorder getShopBorder(){return shopBorder;}
     public LineBorder getBenchBorder(){return benchBorder;}
 
-
-    public void resetGame(){
-        listPlayers.clear();
-        theShop.clearShopArray();
-        listOneCosts.clear();
-        listTwoCosts.clear();
-        listThreeCosts.clear();
-        listFourCosts.clear();
-        listFiveCosts.clear();
+    public Dimension getBenchDimensions(){
+        return new Dimension(benchWidth,benchHeight);
     }
+
 
 }
