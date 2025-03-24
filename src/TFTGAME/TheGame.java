@@ -46,10 +46,9 @@ public class TheGame {
     private static int bal = 0;
 
     private Shop theShop;
-
-    /*public TheGame(){
-        this((Player) null);
-    }*/
+    
+    int bfSetupFlag = 1;
+    
     public TheGame(){
         //createUIComponents is called
 
@@ -118,7 +117,7 @@ public class TheGame {
             }
         });
 
-        Timer timer = new Timer();
+        /*Timer timer = new Timer();
         TimerTask endfight = new TimerTask(){
             @Override
             public void run(){
@@ -126,7 +125,7 @@ public class TheGame {
                 battlefield.bfFrame.setVisible(false);
 
             }
-        };
+        };*/
         //int fightTime = 30000; // 30 seconds
         int fightTime = 2000; //testing
         fightButton.addActionListener(new ActionListener() {
@@ -134,8 +133,28 @@ public class TheGame {
             public void actionPerformed(ActionEvent e) {
                 //Create a new window pop up that opens a wide gameboard that starts a real-time fight between units!
                 //create a new java file and give it UI right??
-                battlefield.bfFrame.setSize(getBenchWidth(), (int)(getBenchHeight()*1.4));
+                int bfFrameWidth = getBenchWidth();
+                int bfFrameHeight = (int) (getBenchHeight() * 1.4);
+                battlefield.bfFrame.setSize(bfFrameWidth, bfFrameHeight);
                 battlefield.bfFrame.setVisible(true);
+                if (bfSetupFlag == 1) {
+                    battlefield.setupField(bfFrameWidth,bfFrameHeight);
+                    bfSetupFlag = 0;
+                }
+
+                Timer timer = new Timer();
+                TimerTask endfight = new TimerTask(){
+                    @Override
+                    public void run(){
+                        System.out.println("Ending fight");
+                        battlefield.bfFrame.setVisible(false);
+
+                    }
+                };
+
+
+
+
                 timer.schedule(endfight, fightTime);
             }
         });
