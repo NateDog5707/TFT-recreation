@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TFT.iml" filepath="$PROJECT_DIR$/TFT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TFTGAME.iml" filepath="$PROJECT_DIR$/TFTGAME.iml" />
     </modules>
   </component>
 </project>

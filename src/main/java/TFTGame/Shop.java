@@ -1,7 +1,7 @@
-package TFTGAME;
+package main.java.TFTGame;
 
-import TFTGAME.Exceptions.NotEnoughBalException;
-import TFTGAME.Exceptions.NotEnoughSpaceException;
+import main.java.TFTGame.Exceptions.NotEnoughBalException;
+import main.java.TFTGame.Exceptions.NotEnoughSpaceException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +48,7 @@ public class Shop {
      */
     private static Unit[] shopArray = new Unit[5];
 
-    private TheGame theTFTGame;
+    private TheGame theGame;
 
     ImageIcon[] imageIcons = new ImageIcon[5];
     Image[] images = new Image[5];
@@ -57,7 +57,7 @@ public class Shop {
 
 
     public Shop (TheGame gamescreen){
-        theTFTGame = gamescreen;
+        theGame = gamescreen;
         //create uicomponents
         TheGame.initializeShop();
         //initialize first shop
@@ -92,7 +92,7 @@ public class Shop {
         buyButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //theTFTGame.getTheShop().freezeShopPanelSize();
+                //theGame.getTheShop().freezeShopPanelSize();
                 /*panel.setPreferredSize(panel.getSize());
                 System.out.println(panel.getBackground());*/
                 if (shopArray[0] == null){
@@ -100,7 +100,7 @@ public class Shop {
                 }
                 else{
                     System.out.println(shopArray[0]);
-                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 0);
+                    int benchIndexAdded = buyUnit(theGame.mainPlayer, 0);
                     //buyUnit can return -1 when errors of not enough bal or not enough bench space
                     if (benchIndexAdded == -1){
                         System.out.println("Error when buying");
@@ -110,7 +110,7 @@ public class Shop {
                     //gui
                     {
                         clearShopDisplay(0);
-                        theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                        theGame.mainPlayer.getBench().updateBenchIcons(theGame.getBenchFrame(), theGame, benchIndexAdded);
                         System.out.println("outside call:" +panel.getHeight());
                     }
                 }
@@ -124,13 +124,13 @@ public class Shop {
                     System.out.println("hey nothing in this shop");
                 } else{
                     System.out.println(shopArray[1]);
-                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 1);
+                    int benchIndexAdded = buyUnit(theGame.mainPlayer, 1);
                     if (benchIndexAdded == -1){
                         System.out.println("Error when buying");
                         return;
                     }
                     clearShopDisplay(1);
-                    theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                    theGame.mainPlayer.getBench().updateBenchIcons(theGame.getBenchFrame(), theGame, benchIndexAdded);
                 }
             }
         });
@@ -141,13 +141,13 @@ public class Shop {
                     System.out.println("hey nothing in this shop");
                 } else{
                     System.out.println(shopArray[2]);
-                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 2);
+                    int benchIndexAdded = buyUnit(theGame.mainPlayer, 2);
                     if (benchIndexAdded == -1){
                         System.out.println("Error when buying");
                         return;
                     }
                     clearShopDisplay(2);
-                    theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                    theGame.mainPlayer.getBench().updateBenchIcons(theGame.getBenchFrame(), theGame, benchIndexAdded);
                 }
             }
         });
@@ -158,13 +158,13 @@ public class Shop {
                     System.out.println("hey nothing in this shop");
                 } else{
                     System.out.println(shopArray[3]);
-                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 3);
+                    int benchIndexAdded = buyUnit(theGame.mainPlayer, 3);
                     if (benchIndexAdded == -1){
                         System.out.println("Error when buying");
                         return;
                     }
                     clearShopDisplay(3);
-                    theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                    theGame.mainPlayer.getBench().updateBenchIcons(theGame.getBenchFrame(), theGame, benchIndexAdded);
                 }
             }
         });
@@ -175,13 +175,13 @@ public class Shop {
                     System.out.println("hey nothing in this shop");
                 } else{
                     System.out.println(shopArray[4]);
-                    int benchIndexAdded = buyUnit(theTFTGame.mainPlayer, 4);
+                    int benchIndexAdded = buyUnit(theGame.mainPlayer, 4);
                     if (benchIndexAdded == -1){
                         System.out.println("Error when buying");
                         return;
                     }
                     clearShopDisplay(4);
-                    theTFTGame.mainPlayer.getBench().updateBenchIcons(theTFTGame.getBenchFrame(), theTFTGame, benchIndexAdded);
+                    theGame.mainPlayer.getBench().updateBenchIcons(theGame.getBenchFrame(), theGame, benchIndexAdded);
                 }
             }
         });
@@ -224,7 +224,7 @@ public class Shop {
             else{
                 //enough balance, remove 2 gold and proceed to reroll
                 TheGame.setbal(TheGame.getbal() -2 );
-                theTFTGame.updateTextArea();
+                theGame.updateTextArea();
             }
             //A done checking!
 
@@ -235,7 +235,7 @@ public class Shop {
                     System.out.println("iteration " + i3 + ": " + TheGame.getListOneCosts().get(i3));
                 }*/
                 //reroll the costs
-                shopArray[i2] = rerollShopUnit(rerollShopCosts(theTFTGame.getMainPlayer().getLevel()), i2); // may have to change this to support MULTIPLE PLAYERS
+                shopArray[i2] = rerollShopUnit(rerollShopCosts(theGame.getMainPlayer().getLevel()), i2); // may have to change this to support MULTIPLE PLAYERS
 
                 //gui stuff
                 imageIcons[i2] = new ImageIcon(shopArray[i2].getImageFile());
@@ -483,12 +483,12 @@ public class Shop {
             shopPanelHeight = panel.getHeight();
             //panel.setMinimumSize(new Dimension(panel.getWidth(), shopPanelHeight));
             panel.setPreferredSize(new Dimension(panel.getWidth(), shopPanelHeight));
-            panel.setBorder(theTFTGame.getShopBorder());
+            panel.setBorder(theGame.getShopBorder());
             panel.updateUI();
         }
         /*//panel.setBorder(null);
         panel.setPreferredSize(new Dimension(panel.getWidth(), shopPanelHeight));
-        //panel.setBorder(theTFTGame.getShopBorder());*/
+        //panel.setBorder(theGame.getShopBorder());*/
         System.out.println("inside after: " + panel.getHeight());
 
 

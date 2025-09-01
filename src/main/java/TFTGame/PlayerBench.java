@@ -1,4 +1,4 @@
-package TFTGAME;
+package main.java.TFTGame;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -185,7 +185,7 @@ public class PlayerBench {
                     intFrame.remove(theLabel);
                     intFrame.revalidate();
                     intFrame.repaint();
-                    MainMenu.getTheTFTGame().getTheShop().sellUnit(player, theLabel.getTheUnit(), theLabel.onBench, theLabel.coordX, theLabel.coordY);
+                    MainMenu.gettheGame().getTheShop().sellUnit(player, theLabel.getTheUnit(), theLabel.onBench, theLabel.coordX, theLabel.coordY);
 
                 }
             }

@@ -1,4 +1,4 @@
-package TFTGAME.Exceptions;
+package main.java.TFTGame.Exceptions;
 
 public class NotEnoughBalException extends Exception{
     public NotEnoughBalException(){
