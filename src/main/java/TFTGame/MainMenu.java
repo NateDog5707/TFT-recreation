@@ -1,4 +1,4 @@
-package TFTGAME;
+package main.java.TFTGame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,11 +16,12 @@ public class MainMenu {
     private JTextField usernameField;
     private JLabel EYUtext;
     private static String username;
-    private static TheGame theTFTGame;
+    private static TheGame theGame;
     private static Player player;
 
     public MainMenu(){
 
+        System.out.println("startButton = " + startButton);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -34,14 +35,14 @@ public class MainMenu {
                 }
                 player = new Player(username);
 
-                theTFTGame = new TheGame();
-                theTFTGame.gameFrame.setVisible(true);
+                theGame = new TheGame();
+                theGame.gameFrame.setVisible(true);
 
                 //here to call Player Bench init cuz sizes of modules don't get established until after constructor
                 //debug size
-                System.out.println("[MainMenu] Bench dimensions: " + theTFTGame.getBenchFrame().getSize());
+                System.out.println("[MainMenu] Bench dimensions: " + theGame.getBenchFrame().getSize());
 
-                player.getBench().initAnchorPoints(theTFTGame.getBenchFrame(), theTFTGame);
+                player.getBench().initAnchorPoints(theGame.getBenchFrame(), theGame);
             }
         });
         EXITButton.addActionListener(new ActionListener() {
@@ -73,7 +74,7 @@ public class MainMenu {
     public static String getUsername(){return username;}
     public static Player getPlayer(){return player;}
 
-    public static TheGame getTheTFTGame(){return theTFTGame;}
+    public static TheGame gettheGame(){return theGame;}
 
 
 }

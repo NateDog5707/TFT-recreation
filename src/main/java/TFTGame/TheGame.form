@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="TFTGAME.TheGame">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="main.java.TFTGame.TheGame">
   <grid id="27dc6" binding="TheGamePanel" layout-manager="GridBagLayout">
     <constraints>
       <xy x="78" y="20" width="457" height="460"/>

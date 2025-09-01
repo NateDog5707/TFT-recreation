@@ -1,4 +1,4 @@
-package TFTGAME;
+package main.java.TFTGame;
 
 import javax.swing.*;
 
