@@ -125,6 +125,8 @@ public class Player {
         return "Player: " + this.username + " , HP: " + this.hp + "\n";
     }
 
+    public void setUsername(String username){ this.username = username; }
+    public String getUsername(){ return this.username; }
     public void setPlayerNum(int num){
         this.playerNum = num;
     }

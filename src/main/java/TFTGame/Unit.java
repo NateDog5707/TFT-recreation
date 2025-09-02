@@ -12,14 +12,14 @@ public class Unit {
     private ImageIcon image;
 
 
-    public Unit(String name, int id, int cost, int HP, int mana, int atk){
+    public Unit(String name, int id, int cost, int HP, int mana, int maxMana, int atk){
         this.name = name;
         this.id = id;
         this.cost = cost;
         this.HP = HP;
         this.maxHP = HP;
         this.MANA = mana;
-        this.maxMANA = mana;
+        this.maxMANA = maxMana;
         this.ATK = atk;
     }
 

@@ -245,7 +245,7 @@ public class TheGame {
     public static void initializeUnits(){
         //initialize the units
         for (int i = 0; i < numOneCosts; i++){
-            listOneCosts.add(new Unit("tempUnit 1c", i, 1, 100 + i, 10, 10));
+            listOneCosts.add(new Unit("tempUnit 1c", i, 1, 100 + i, 0, 10, 10));
             if (i %2 ==0 ) {
                 listOneCosts.get(i).setImageFile(Constants.CHAMPIONS_PREFIX + "kirby.jpg");
                 listOneCosts.get(i).setName("Kirby");
@@ -256,16 +256,16 @@ public class TheGame {
             }
         }
         for (int i2 = 0; i2 <numTwoCosts; i2++){
-            listTwoCosts.add(new Unit("tempUnit 2c", i2, 2, 200 +i2, 20, 20));
+            listTwoCosts.add(new Unit("tempUnit 2c", i2, 2, 200 +i2, 0, 20, 20));
         }
         for (int i3 = 0 ;i3< numThreeCosts; i3++){
-            listThreeCosts.add(new Unit("tempUnit 3c", i3, 3, 300 +i3, 30, 30));
+            listThreeCosts.add(new Unit("tempUnit 3c", i3, 3, 300 +i3,0, 30, 30));
         }
         for (int i4 = 0; i4 < numFourCosts; i4++){
-            listFourCosts.add(new Unit("tempUnit 4c", i4, 4, 400 +i4, 40, 40));
+            listFourCosts.add(new Unit("tempUnit 4c", i4, 4, 400 +i4,0, 40, 40));
         }
         for (int i5 =0; i5 < numFiveCosts; i5++){
-            listFiveCosts.add(new Unit("tempUnit 5c", i5, 5, 500 +i5, 50, 50));
+            listFiveCosts.add(new Unit("tempUnit 5c", i5, 5, 500 +i5, 0,50, 50));
         }
     }
 
