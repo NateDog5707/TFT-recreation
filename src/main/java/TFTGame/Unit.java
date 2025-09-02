@@ -1,4 +1,4 @@
-package main.java.TFTGame;
+package TFTGame;
 import javax.swing.*;
 public class Unit {
 

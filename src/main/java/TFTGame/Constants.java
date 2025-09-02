@@ -1,4 +1,4 @@
-package main.java.TFTGame;
+package TFTGame;
 
 public class Constants {
     public static final String RESOURCES_PREFIX = "src/main/resources/";

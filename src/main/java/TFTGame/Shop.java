@@ -1,7 +1,7 @@
-package main.java.TFTGame;
+package TFTGame;
 
-import main.java.TFTGame.Exceptions.NotEnoughBalException;
-import main.java.TFTGame.Exceptions.NotEnoughSpaceException;
+import TFTGame.Exceptions.NotEnoughBalException;
+import TFTGame.Exceptions.NotEnoughSpaceException;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package main.java.TFTGame;
+package TFTGame;
 
 public class OneCostUnit extends Unit{
 

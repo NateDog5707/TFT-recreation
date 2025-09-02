@@ -1,4 +1,4 @@
-package main.java.TFTGame;
+package TFTGame;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;

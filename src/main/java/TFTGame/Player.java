@@ -1,6 +1,6 @@
-package main.java.TFTGame;
+package TFTGame;
 
-import main.java.TFTGame.Exceptions.UnitNotFoundException;
+import TFTGame.Exceptions.UnitNotFoundException;
 
 public class Player {
 

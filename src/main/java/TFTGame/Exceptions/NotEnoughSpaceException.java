@@ -1,4 +1,4 @@
-package main.java.TFTGame.Exceptions;
+package TFTGame.Exceptions;
 
 public class NotEnoughSpaceException extends Exception{
     public NotEnoughSpaceException(){
